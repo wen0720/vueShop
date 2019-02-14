@@ -1,45 +1,15 @@
 <template>
-  <div>
+  <div>     
+    <!-- <message-alert></message-alert> -->
     <div class="row">
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-          <h6
-            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-          >
-            <span>管理員</span>
-            <a class="d-flex align-items-center text-muted" href="#">
-              <span data-feather="plus-circle"></span>
-            </a>
-          </h6>
-          <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                產品列表
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                優惠券列表
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                訂單列表
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <sidebar-admin></sidebar-admin>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
         >
           <h1 class="h2">產品列表</h1>
-          <button @click="openModal(true)" type="button" class="btn btn-sm btn-outline-primary">新建商品</button>
+          <button @click="openModal(true, undefined ,'reserve')" type="button" class="btn btn-sm btn-outline-primary">新建商品</button>
         </div>
         <div class="table-responsive">
           <table class="table mt-4">
@@ -64,25 +34,25 @@
                   <span v-else>未啟用</span>
                 </td>
                 <td>
-                  <button @click="openModal(false, item)" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
-                  <button @click="deleteProduct(item.id)" class="btn btn-outline-dark btn-sm">刪除</button>
+                  <button @click="openModal(false, item, 'reserve')" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
+                  <button @click="openModal(undefined, item, 'delete')" class="btn btn-outline-dark btn-sm">刪除</button>
                 </td>
               </tr>
             </tbody>
           </table>
           <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
+            <li class="page-item" :class="{disabled: !pagination.has_pre}">
+              <a @click.prevent="getProducts(pagination.current_page -1)" class="page-link" href="#" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
 
-            <li v-for="page in pagination.total_pages" :key="page" class="page-item">
-              <a class="page-link" href="#">{{ page }}</a>
+            <li v-for="page in pagination.total_pages" :key="page" class="page-item" :class="{active: page === pagination.current_page}">
+              <a @click.prevent="getProducts(page)" class="page-link" href="#">{{ page }}</a>
             </li>
 
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
+            <li class="page-item" :class="{disabled: !pagination.has_next}">
+              <a @click.prevent="getProducts( pagination.current_page + 1 )" class="page-link" href="#" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
@@ -210,7 +180,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-danger">確認刪除</button>
+            <button @click="deleteProduct(tempProduct.id)" type="button" class="btn btn-danger">確認刪除</button>
           </div>
         </div>
       </div>
@@ -222,6 +192,7 @@
 <script>
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
+import SidebarAdmin from '@/components/admin/Sidebar.vue'
 
 export default {
   name: "lessonAdmin",
@@ -230,15 +201,16 @@ export default {
       products: [],
       pagination: {},
       tempProduct: {},
-      isNew: true
+      isNew: true,            
     };
+  },
+  components:{
+    SidebarAdmin
   },
   methods: {
     getProducts(page = 1) {
       const vm = this;
-      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${
-        process.env.VUE_APP_CUSTOM_PATH
-      }/admin/products?page=${page}`;
+      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/products?page=${page}`;
       this.$http.get(api).then(res => {
         console.log(res.data);
         if (res.data.success) {
@@ -247,18 +219,30 @@ export default {
         }
       });
     },
-    openModal(bool, item) {
-      if(bool){
-        this.tempProduct = {}
-        this.isNew = true
-      }else{
-        this.tempProduct = Object.assign({}, item)    
-        this.isNew = false
-      }
-      $("#productModal").modal("show");      
+    openModal(boolForNew, item, style) {
+
+      this.$refs.files.value = '' // 每次打開都將上傳檔案的欄位重新設置
+      if(style === 'reserve'){
+        if(boolForNew){
+          this.tempProduct = {}
+          this.isNew = true
+        }else{
+          this.tempProduct = Object.assign({}, item)    
+          this.isNew = false
+        }
+        $("#productModal").modal("show");      
+      }else if(style === 'delete'){
+        this.tempProduct = Object.assign({}, item)        
+        $("#delProductModal").modal("show");      
+      }            
+
     },
-    closeModal(){
-        $("#productModal").modal("hide")
+    closeModal(style){
+        if(style === 'reserve'){
+          $("#productModal").modal("hide")
+        }else if(style === 'delete'){
+          $("#delProductModal").modal("hide");      
+        }        
     },
     addProduct() {      
       const vm = this;
@@ -274,7 +258,7 @@ export default {
           console.log(res.data)
           if(res.data.success){
               vm.getProducts();
-              vm.closeModal();
+              vm.closeModal('reserve');
           }
       })
     },
@@ -291,6 +275,7 @@ export default {
             if(res.data.success){
                 // vm.tempProduct.imageUrl = res.data.imageUrl
                 vm.$set(vm.tempProduct, 'imageUrl', res.data.imageUrl)
+                vm.$bus.$emit('message:push', '新增照片成功', 'success')
             }            
         })
     },
@@ -300,12 +285,15 @@ export default {
       this.$http.delete(api).then((res) => {
           if(res.data.success){
               vm.getProducts();
+              vm.closeModal('delete')
           }
       })
     },
   },  
-  created() {
-    this.getProducts();    
+  created() {    
+    console.log('created lessonAdmin')
+    this.getProducts();        
+    // this.$loading.show();
   }
 };
 </script>

@@ -2,7 +2,7 @@
     <div>
         <nav class="gradient01">
             <div class="navbox">
-                <h1><p>始壯哥</p></h1>
+                <router-link to="/" tag="h1"><p>始壯哥</p></router-link>
                 <ul>                    
                     <li>
                         <a @click.prevent="signOut" href="#">登出</a>    
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name:'navbox_admin',
+    name:'navbox_admin',    
     methods: {
         signOut(){
             // const vm = this;
@@ -27,7 +27,7 @@ export default {
                     this.$router.push('/')
                 }
             })
-        }
+        },        
     }
 }
 </script>

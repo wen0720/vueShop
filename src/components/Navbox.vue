@@ -1,7 +1,7 @@
 <template>
     <nav class="gradient01">
         <div class="navbox">
-            <h1 @click="goIndex"><p>始壯哥</p></h1>
+            <router-link to="/" tag="h1"><p>始壯哥</p></router-link>            
             <ul>
                 <!-- <li><a href="./form.html">找教練</a></li> -->
                 <li>
@@ -21,11 +21,7 @@
 <script>
 export default {
     name: 'navbox',
-    methods: {
-        goIndex(){
-            this.$router.push('/')
-        }
-    }
+    methods: {}
 }
 </script>
 

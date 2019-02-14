@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
     .form-signin{
         width: 100%;
-        max-width: 330px;
+        max-width: 500px;
         padding: 10% 0;
         margin: 0 auto;
         font-size: 16px;

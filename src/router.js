@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Home from './views/Home.vue'
-import Lesson from './views/Lesson.vue'
-import Signin from './components/Signin.vue'
 import Backstage from './views/Backstage.vue'
+
+import Lesson from './components/front/Lesson.vue'
+import Signin from './components/Signin.vue'
 import IndexFeature from './components/IndexFeature.vue'
 import LessonAdmin from './components/admin/LessonAdmin.vue'
+import Order from './components/admin/Order.vue'
 
 Vue.use(Router)
 
@@ -40,7 +43,13 @@ export default new Router({
         {
           path: '',
           name: 'admin',
-          component: LessonAdmin
+          component: LessonAdmin,
+          meta: {requiresAuth: true}
+        },
+        {
+          path: 'order',
+          name: 'order',
+          component: Order,
         }
       ]
       // meta: {requiresAuth: true}
