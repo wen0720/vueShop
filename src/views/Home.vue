@@ -10,7 +10,6 @@
 <script>
 // @ is an alias to /src
 import Navbox from '@/components/Navbox'
-// import Slick from 'vue-slick';
 
 
 export default {
@@ -29,5 +28,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  
 </style>

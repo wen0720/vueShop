@@ -52,11 +52,15 @@ export default {
         width: 100%;
         z-index: 100;
         box-shadow: 0px 2px 1px rgba(0,0,0,.1);
+        transform: rotate(-1deg);
+        padding: 15px 0 21px 0;
+        top: -18px;
     }
 
     .navbox{
         max-width: 1520px;
         margin: 0 auto;    
+        transform: rotate(1deg);
         @include clearfix;
         ul{
             float: right;

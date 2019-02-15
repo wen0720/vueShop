@@ -18,9 +18,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~bootstrap/scss/bootstrap.scss';
 @import '@/assets/sass/_functions.scss';
 @import '@/assets/sass/_variables.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+
 
 #app {  
   -webkit-font-smoothing: antialiased;

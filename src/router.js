@@ -24,17 +24,17 @@ export default new Router({
           component: IndexFeature
         },
         {
-          path: '/signin',
+          path: 'signin',
           name: 'signin',
           component: Signin
+        },
+        {
+          path: 'lesson',
+          name: 'lesson',
+          component: Lesson 
         }
       ]
-    },    
-    {
-      path: '/lesson',
-      name: 'lesson',
-      component: Lesson 
-    },    
+    },            
     {
       path: '/admin',
       // name: 'admin',

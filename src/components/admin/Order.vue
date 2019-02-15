@@ -3,13 +3,13 @@
         <div class="row">
             <sidebar-admin></sidebar-admin>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <div
+                <!-- <div
                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
                 >
                 <h1 class="h2">產品列表</h1>
                     <button @click="openModal(true, undefined ,'reserve')" type="button" class="btn btn-sm btn-outline-primary">新建商品</button>
-                </div>
-                <div class="table-responsive">
+                </div> -->
+                <!-- <div class="table-responsive">
                     <table class="table mt-4">
                         <thead>
                         <tr>
@@ -55,7 +55,7 @@
                         </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </main>
         </div>
     </div>

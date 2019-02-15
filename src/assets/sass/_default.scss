@@ -64,7 +64,7 @@ a, button {
     outline: none;
     hlbr: expression(this.onFocus=this.blur());
     &:visited {
-        color: $link-color;
+        // color: $link-color;
     }
     &:focus {
         outline: none;
@@ -75,7 +75,7 @@ a, button {
     // }
     &:active {
         outline: 0;
-        color: $link-active;
+        // color: $link-active;
     }
 }
 

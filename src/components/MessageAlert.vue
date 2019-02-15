@@ -48,11 +48,17 @@ export default {
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
-    vm.$bus.$on('message:push', (message, status = 'warning') => {        
+    vm.$bus.$on('message:push', (message, status = 'warning') => { 
+      console.log('觸發了message:push')       
       vm.updateMessage(message, status);
     });
     // vm.$bus.$emit('message:push');
   },
+  beforeDestroy(){
+    console.log('message組件在此時將被destory')
+    const vm = this;
+    vm.$bus.$off('message:push');
+  }
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <div>          
+    <div class="wrapper">          
         <Navbox-admin></Navbox-admin>
         <Message-alert></Message-alert>
         <router-view></router-view>                        
@@ -8,6 +8,7 @@
 
 
 <script>
+
 import NavboxAdmin from '@/components/Navbox_admin.vue'
 import MessageAlert from '@/components/MessageAlert.vue'
 
@@ -24,15 +25,16 @@ export default {
     components:{
         NavboxAdmin,
         MessageAlert 
-    },
-    created(){
-        console.log('created!!')        
-        // this.$bus.$emit('message:push', ['我是測試訊息', 'success'])
     }
 }
 </script>
 
 
 <style lang="scss" scoped>
-    
+    /deep/ .wrapper{
+        font-size: 1rem
+    }
+    /deep/ .btn{
+        font-size: .9rem
+    }
 </style>
