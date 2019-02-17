@@ -9,11 +9,10 @@ axios.defaults.withCredentials = true;
 Vue.use(VueAxios, axios)
 Vue.use(Loading)
 
-let loader 
-
 axios.interceptors.request.use(function (config){
   console.log('show:',Vue.$loading)
-  loader = Vue.$loading.show()
+  let loader = Vue.$loading.show() // 宣告vue-overlayloar 並開啟
+  config.loader = loader // 將當次ajax的loaer塞進config裡（等回傳時hide）
   return config
 }, function(error){
   return Promise.reject(error)
@@ -21,7 +20,8 @@ axios.interceptors.request.use(function (config){
 
 axios.interceptors.response.use(function (response){
   console.log('hide:',Vue.$loading)
-  loader.hide();
+  // 回傳時 config 被放在response裡
+  response.config.loader.hide();
   return response
 }, function(error){
   return Promise.reject(error)

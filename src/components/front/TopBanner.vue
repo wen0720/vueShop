@@ -10,7 +10,13 @@
 
 <script>
 export default {
-    name: 'topBanner'
+    name: 'topBanner',
+    created(){
+        console.log('topbanner created')
+    },
+    mounted(){
+        console.log('topbanner mounted')
+    }
 }
 </script>
 

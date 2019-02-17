@@ -5,6 +5,7 @@ import Home from './views/Home.vue'
 import Backstage from './views/Backstage.vue'
 
 import Lesson from './components/front/Lesson.vue'
+import Class from './components/front/Class.vue'
 import Signin from './components/Signin.vue'
 import IndexFeature from './components/IndexFeature.vue'
 import LessonAdmin from './components/admin/LessonAdmin.vue'
@@ -32,6 +33,11 @@ export default new Router({
           path: 'lesson',
           name: 'lesson',
           component: Lesson 
+        },
+        {
+          path: 'lesson/:id',
+          name: 'class',
+          component: Class
         }
       ]
     },            
