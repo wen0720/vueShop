@@ -40,7 +40,7 @@
               </tr>
             </tbody>
           </table>
-          <ul class="pagination">
+          <!-- <ul class="pagination">
             <li class="page-item" :class="{disabled: !pagination.has_pre}">
               <a @click.prevent="getProducts(pagination.current_page -1)" class="page-link" href="#" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
@@ -56,7 +56,8 @@
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
-          </ul>
+          </ul> -->
+          <Pagination :pagination-info="pagination" v-on:changePage-getProduct="getProducts"></Pagination>
         </div>
       </main>
     </div>
@@ -193,6 +194,7 @@
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
+import Pagination from '@/components/Pagination.vue'
 
 export default {
   name: "lessonAdmin",
@@ -200,12 +202,13 @@ export default {
     return {
       products: [],
       pagination: {},
-      tempProduct: {},
+      tempProduct: {},      
       isNew: true,            
     };
   },
   components:{
-    SidebarAdmin
+    SidebarAdmin,
+    Pagination
   },
   methods: {
     getProducts(page = 1) {

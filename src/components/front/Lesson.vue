@@ -39,8 +39,11 @@
                                     <a href="#" @click.prevent="addToCart(item.id)" class="btn btn-primary">加入購物車</a>
                                 </div>
                             </div>                            
-                        </div>
+                        </div>                        
                     </div>
+                    <Pagination :pagination-info="pagination" 
+                                v-on:changePage-getProduct="getProducts"
+                                class="my-3"></Pagination>
                 </div>         
 
                 
@@ -92,6 +95,7 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 
 import TopBanner from '@/components/front/TopBanner.vue'
 import CartDialog from '@/components/front/CartDialog.vue'
+import Pagination from '@/components/Pagination.vue'
 
 export default {
     name: 'lesson',
@@ -101,12 +105,18 @@ export default {
             tempProduct: {
                 qty: 1
             },
-            cart: null
+            cart: null,
+            pagination: {},
+            // filterProductArr: [],
         }
     },
     components:{
         TopBanner,
-        CartDialog
+        CartDialog,
+        Pagination
+    },
+    computed:{
+        filterProductArr(){}
     },
     methods:{
         getProducts(page = 1){
@@ -116,6 +126,7 @@ export default {
                 console.log(res.data)
                 if(res.data.success){
                     vm.products = res.data.products
+                    vm.pagination = res.data.pagination;
                 }
             })
         },

@@ -1,6 +1,6 @@
 <template>
   <div>        
-    <div class="wrapper">
+    <div class="wrapper" @click="closeCart">
         <Navbox></Navbox>
         <router-view></router-view>
     </div>
@@ -19,11 +19,14 @@ export default {
     }
   },
   methods:{
-
+    closeCart(){
+      console.log(this.$bus)
+      this.$bus.$emit('closeCart')
+    }
   },
   components: {        
     Navbox
-  }
+  }  
 }
 </script>
 

@@ -1,9 +1,9 @@
 <template>
-    <div class="cart">
+    <div class="cart" @click.stop="openCart">
         <div class="cart__btn">
             <i class="fas fa-cart-plus"></i>
         </div>
-        <div class="cart__list rounded-sm">
+        <div class="cart__list rounded-sm" :class="{'d-none': !showCart}">
             <p class="h6 pt-2 pb-3">已選購商品</p>         
             <table class="table">
                 <!-- <thead>
@@ -43,6 +43,7 @@
                     </tr>
                 </tfoot>
             </table>            
+            <div class="cart__listMask"></div>
         </div>
     </div>    
 </template>
@@ -52,7 +53,7 @@
         name: 'cartDialog',
         data(){
             return {
-                
+                showCart: false
             }
         },
         props: ['cart'],
@@ -64,14 +65,24 @@
                     console.log('[刪除購物車物品]', res.data)
                     vm.$emit('deleteCartProduct')
                 })            
+            },
+            openCart(){
+                this.showCart = true
             }
         },
         created(){
             console.log('cart created')
+            const vm = this
+            this.$bus.$on('closeCart', ()=>{
+                console.log('emit成功')
+                if(vm.showCart){
+                    vm.showCart = false;
+                }                
+            })
         },
         mounted(){
             console.log('cart mounted')
-            console.log('[購物車項目props]',this.cart)
+            console.log('[購物車項目props]',this.cart)            
         }
     }
 </script>
