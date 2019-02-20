@@ -19,8 +19,7 @@ export default {
     }
   },
   methods:{
-    closeCart(){
-      console.log(this.$bus)
+    closeCart(){      
       this.$bus.$emit('closeCart')
     }
   },

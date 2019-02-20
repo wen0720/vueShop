@@ -17,10 +17,9 @@
                         </router-link>        
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            優惠券列表
-                        </a>
+                        <router-link to="/admin/coupon" class="nav-link">
+                            折價券列表  
+                        </router-link>        
                     </li>
                     <li class="nav-item">
                         <router-link to="/admin/order" class="nav-link">

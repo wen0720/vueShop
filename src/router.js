@@ -9,6 +9,7 @@ import Class from './components/front/Class.vue'
 import Signin from './components/Signin.vue'
 import IndexFeature from './components/IndexFeature.vue'
 import LessonAdmin from './components/admin/LessonAdmin.vue'
+import CouponAdmin from './components/admin/CouponAdmin.vue'
 import Order from './components/admin/Order.vue'
 
 Vue.use(Router)
@@ -53,9 +54,16 @@ export default new Router({
           meta: {requiresAuth: true}
         },
         {
+          path: 'coupon',
+          name: 'coupon',
+          component: CouponAdmin,
+          meta: {requiresAuth: true}
+        },
+        {
           path: 'order',
           name: 'order',
           component: Order,
+          meta: {requiresAuth: true}
         }
       ]
       // meta: {requiresAuth: true}

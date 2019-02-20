@@ -5,23 +5,28 @@
             <div class="row">        
                 <div class="col-lg-2">
                     <div class="list-group">
-                        <button type="button" class="list-group-item list-group-item-action active">
+                        <!-- <button  type="button" class="list-group-item list-group-item-action active">
                             有氧
                         </button>
-                        <button type="button" class="list-group-item list-group-item-action">飛輪</button>
-                        <button type="button" class="list-group-item list-group-item-action">肌力訓練</button>
-                        <button type="button" class="list-group-item list-group-item-action">基礎瑜珈</button>
-                        <button type="button" class="list-group-item list-group-item-action">飲食課程</button>
-                        <button type="button" class="list-group-item list-group-item-action">體驗</button>
-                        <button type="button" class="list-group-item list-group-item-action">1對1課程</button>
-                        <!-- <button type="button" class="list-group-item list-group-item-action" disabled>1對1課程</button> -->
+                        <button @click.prevent="changeFilterStyle($event)" type="button" class="list-group-item list-group-item-action">飛輪</button>
+                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">肌力訓練</button>
+                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">基礎瑜珈</button>
+                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">飲食課程</button>
+                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">體驗</button>
+                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">1對1課程</button> -->
+                        <button  type="button" class="list-group-item list-group-item-action"
+                            v-for="(item, idx) in filterStyleArr" :key="item" :value="item"
+                            @click="changeFilterStyle(idx)"
+                            >
+                            {{item}}
+                        </button>
                     </div>
                 </div>
                 <div class="col-lg-10">
                     <div class="row">
                         <div 
                             class="col-lg-4 my-3"
-                            v-for="item in products"
+                            v-for="item in filterProductArr"
                             :key="item.id">
                              <div class="card">
                                 <img :src="item.imageUrl" class="card-img-top" :alt="item.title">
@@ -41,7 +46,7 @@
                             </div>                            
                         </div>                        
                     </div>
-                    <Pagination :pagination-info="pagination" 
+                    <Pagination :pagination-info="pagination" v-if="currentFilterStyle === '全部商品'"
                                 v-on:changePage-getProduct="getProducts"
                                 class="my-3"></Pagination>
                 </div>         
@@ -102,28 +107,38 @@ export default {
     data(){
         return {
             products:[],
+            allProducts: [],
             tempProduct: {
                 qty: 1
             },
             cart: null,
             pagination: {},
-            // filterProductArr: [],
+            currentFilterStyle: '全部商品',      
+            filterStyleArr: ['全部商品','有氧', '飛輪', '肌力訓練', '基礎瑜珈', '飲食課程', '體驗', '1對1課程']      
         }
-    },
+    },   
     components:{
         TopBanner,
         CartDialog,
         Pagination
     },
     computed:{
-        filterProductArr(){}
+        filterProductArr(){        
+            if(this.currentFilterStyle === '全部商品') {
+                return this.products             
+            }else{
+                return this.allProducts.filter(item => {
+                    return item.category === this.currentFilterStyle
+                })  
+            }                                  
+        }        
     },
     methods:{
         getProducts(page = 1){
             const vm = this
             const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/products?page=${page}`                        
             this.$http.get(api).then((res) => {
-                console.log(res.data)
+                console.log('[取得這頁商品]',res.data)
                 if(res.data.success){
                     vm.products = res.data.products
                     vm.pagination = res.data.pagination;
@@ -139,6 +154,16 @@ export default {
                     vm.tempProduct = Object.assign({}, res.data.product, {qty: 1})
                     vm.openModal();
                 }   
+            })
+        },
+        getAllProducts(){
+            const vm = this
+            const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`                        
+            this.$http.get(api).then((res) => {
+                console.log('[取得所有商品]',res.data)
+                if(res.data.success){
+                    vm.allProducts = res.data.products                    
+                }
             })
         },
         openModal(){            
@@ -171,11 +196,16 @@ export default {
                     vm.cart = res.data.data                    
                 }
             })            
+        },
+        changeFilterStyle(idx){                       
+            // this.filterStyle = event.target.textContent            
+            this.currentFilterStyle = this.filterStyleArr[idx]
         }
     },
     created(){
         this.getProducts();
         this.getCarts()
+        this.getAllProducts();
         console.log('lesson created')        
     },
     mounted(){
