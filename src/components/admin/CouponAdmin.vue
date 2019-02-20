@@ -7,7 +7,7 @@
         <div
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
         >
-          <h1 class="h2">產品列表</h1>
+          <h1 class="h2">折價券列表</h1>
           <button @click="openModal(true, undefined ,'reserve')" type="button" class="btn btn-outline-primary">新建折扣碼</button>
         </div>
         <div class="table-responsive">
@@ -33,8 +33,8 @@
                   <span v-else>未啟用</span>
                 </td>
                 <td>
-                  <button @click="openModal" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
-                  <button @click="openModal" class="btn btn-outline-dark btn-sm">刪除</button>
+                  <button @click="openModal(item)" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
+                  <button @click="deleteCoupon(item.id)" class="btn btn-outline-dark btn-sm">刪除</button>
                 </td>
               </tr>
             </tbody>
@@ -97,7 +97,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary">確認</button>
+            <button @click="addCoupon" type="button" class="btn btn-primary">確認</button>
           </div>
         </div>
       </div>
@@ -150,28 +150,61 @@ export default {
         tempCoupon: {}
       }
     },
+    filters: {
+      dateType(date){
+        return moment(date, 'x').format('YYYY-MM-DD')
+      }
+    },
+    computed: {
+      
+    },
     methods: {
       getCoupons(page = 1){
         const vm = this;
         const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`;
         this.$http.get(api).then((res) => {
           console.log(res.data)
-          vm.coupons = res.data.coupons
+          // res.data.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD')}) //轉換日期格式
+          vm.coupons = JSON.parse(JSON.stringify(res.data.coupons))
+          vm.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD')}) //轉換日期格式
         })
       },
       addCoupon(){
         const vm = this;
         const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
         const data = {
-          "title": tempCoupon.title,
-          "is_enabled": tempCoupon.is_enabled,
-          "percent": tempCoupon.percent,
-          "due_date": moment().format("MMM Do YY"),
-          "code": tempCoupon.code
+          "title": vm.tempCoupon.title,
+          "is_enabled": vm.tempCoupon.is_enabled,
+          "percent": vm.tempCoupon.percent,
+          "due_date": moment(vm.tempCoupon.due_date).format('x'),
+          "code": vm.tempCoupon.code
         }
+        console.log(data)
+        this.$http.post(api, {"data": data}).then((res) => {
+            console.log(res.data)
+            if(res.data.success){
+              vm.getCoupons();
+              vm.closeModal()
+            }
+        })
       },
-      openModal(){
+      openModal(coupon){
         $('#couponModal').modal('show')  
+        this.tempCoupon = Object.assign({}, coupon)
+        // this.tempCoupon = {}
+      },
+      closeModal(){
+        $('#couponModal').modal('hide')  
+      },
+      deleteCoupon(id){
+        const vm = this;
+        const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${id}`;
+        this.$http.delete(api).then((res) => {
+            console.log(res.data)
+            if(res.data.success){
+              vm.getCoupons();
+            }
+        })
       }
     },
     components:{
@@ -179,19 +212,7 @@ export default {
     },
     created(){
       const vm = this
-      this.getCoupons()
-      // this.$http.post(`${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`, {
-      //   "data":{
-      //     "title": "超級特惠價格",
-      //     "is_enabled": 1,
-      //     "percent": 80,
-      //     "due_date": 6547658,
-      //     "code": "testCode"
-      //   }
-      // }).then((res) => {
-      //     console.log(res.data)
-      //     vm.coupons = res.data.coupons
-      // })
+      this.getCoupons()      
     }
 }
 </script>
