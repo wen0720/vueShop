@@ -11,7 +11,7 @@ import Signin from './components/Signin.vue'
 import IndexFeature from './components/IndexFeature.vue'
 import LessonAdmin from './components/admin/LessonAdmin.vue'
 import CouponAdmin from './components/admin/CouponAdmin.vue'
-import Order from './components/admin/Order.vue'
+import OrderAdmin from './components/admin/OrderAdmin.vue'
 
 
 Vue.use(Router)
@@ -69,11 +69,10 @@ export default new Router({
         {
           path: 'order',
           name: 'order',
-          component: Order,
+          component: OrderAdmin,
           meta: {requiresAuth: true}
         }
-      ]
-      // meta: {requiresAuth: true}
+      ]      
     },    
      {
       path: '*',

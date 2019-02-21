@@ -116,10 +116,12 @@ export default {
     computed:{
         filterProductArr(){        
             if(this.currentFilterStyle === '全部商品') {
-                return this.products             
+                return this.products.filter(item => {
+                    return item.is_enabled
+                })  
             }else{
                 return this.allProducts.filter(item => {
-                    return item.category === this.currentFilterStyle
+                    return item.category === this.currentFilterStyle && item.is_enabled
                 })  
             }                                  
         }          

@@ -109,7 +109,13 @@ export default {
             cart: {},
             code: '',
             orderInfo: {
-                user:{}
+                message:'',
+                user:{
+                    tel: '',
+                    name: '',
+                    address: '',
+                    email: ''
+                }
             }
         }
     },
