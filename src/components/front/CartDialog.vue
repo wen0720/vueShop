@@ -1,6 +1,7 @@
 <template>
     <div class="cart" @click.stop="openCart">
         <div class="cart__btn">
+            <div class="cart__num">{{ cartTotal }}</div>
             <i class="fas fa-cart-plus"></i>
         </div>
         <div class="cart__list rounded-sm" :class="{'d-none': !showCart}">
@@ -42,7 +43,8 @@
                     <td class="text-right text-success">{{ cart.final_total }}</td>
                     </tr>
                 </tfoot>
-            </table>            
+            </table>                        
+            <router-link to="checkout" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
             <div class="cart__listMask"></div>
         </div>
     </div>    
@@ -70,6 +72,11 @@
                 this.showCart = true
             }
         },
+        computed: {
+            cartTotal(){
+                return this.cart.carts.length
+            }      
+        },
         created(){
             console.log('cart created')
             const vm = this
@@ -79,11 +86,7 @@
                     vm.showCart = false;
                 }                
             })
-        },
-        mounted(){
-            console.log('cart mounted')
-            console.log('[購物車項目props]',this.cart)            
-        }
+        }        
     }
 </script>
 
@@ -114,8 +117,17 @@
             width: 400px;
             box-shadow: 0px 0px 10px rgba(0,0,0,.2);
         }
-        &__infoTitle{
-
+        &__num{
+            position: absolute;
+            background-color: #ff5d42;
+            border-radius: 25px;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            color: #fff;
+            top: -70%;
+            right: -62%;
         }
     }
 </style>

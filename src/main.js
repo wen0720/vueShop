@@ -1,9 +1,39 @@
 import Vue from 'vue'
+import VeeValidate, { Validator } from 'vee-validate'
+import zh_TW from 'vee-validate/dist/locale/zh_TW';
 
 import App from './App.vue'
 import router from './router'
 import './axios.js'
 import './bus'
+
+// const dictionary = {
+//   zh_TW: {
+//     attributes: {
+//       tel: '電話',
+//       email: '信箱',
+//       name: '姓名',
+//       address: '地址',
+//       message: '留言'
+//     }
+//   }
+// };
+
+
+Vue.use(VeeValidate,{
+  dictionary: {
+    zh_TW: {
+      attributes: {
+        tel: '電話',
+        email: '信箱',
+        name: '姓名',
+        address: '地址',
+        message: '留言'
+      }
+    }
+  }
+});
+Validator.localize('zh_TW', zh_TW); // 換成中文語系
 
 Vue.config.productionTip = false
 

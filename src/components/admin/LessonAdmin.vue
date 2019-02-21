@@ -40,7 +40,7 @@
               </tr>
             </tbody>
           </table>          
-          <Pagination :pagination-info="pagination" v-on:changePage-getProduct="getProducts"></Pagination>
+          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getProducts"></Pagination>
         </div>
       </main>
     </div>

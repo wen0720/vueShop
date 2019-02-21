@@ -2,7 +2,9 @@
     <div>
         <div class="topBanner">
             <div class="topBanner_title">
-                <h2>課程列表</h2>                    
+                <h2>
+                    <slot></slot>
+                </h2>                    
             </div>                                        
         </div>
     </div>

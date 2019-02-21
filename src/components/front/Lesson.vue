@@ -1,19 +1,10 @@
 <template>
     <div>
-        <top-banner></top-banner>
+        <top-banner>課程列表</top-banner>
         <div class="container mt-5">        
             <div class="row">        
                 <div class="col-lg-2">
-                    <div class="list-group">
-                        <!-- <button  type="button" class="list-group-item list-group-item-action active">
-                            有氧
-                        </button>
-                        <button @click.prevent="changeFilterStyle($event)" type="button" class="list-group-item list-group-item-action">飛輪</button>
-                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">肌力訓練</button>
-                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">基礎瑜珈</button>
-                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">飲食課程</button>
-                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">體驗</button>
-                        <button @click.prevent="changeFilterStyle" type="button" class="list-group-item list-group-item-action">1對1課程</button> -->
+                    <div class="list-group">                        
                         <button  type="button" class="list-group-item list-group-item-action"
                             v-for="(item, idx) in filterStyleArr" :key="item" :value="item"
                             @click="changeFilterStyle(idx)"
@@ -47,7 +38,7 @@
                         </div>                        
                     </div>
                     <Pagination :pagination-info="pagination" v-if="currentFilterStyle === '全部商品'"
-                                v-on:changePage-getProduct="getProducts"
+                                v-on:changePage-getPagination="getProducts"
                                 class="my-3"></Pagination>
                 </div>         
 
@@ -131,7 +122,7 @@ export default {
                     return item.category === this.currentFilterStyle
                 })  
             }                                  
-        }        
+        }          
     },
     methods:{
         getProducts(page = 1){

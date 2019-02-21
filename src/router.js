@@ -6,16 +6,18 @@ import Backstage from './views/Backstage.vue'
 
 import Lesson from './components/front/Lesson.vue'
 import Class from './components/front/Class.vue'
+import Checkout from './components/front/Checkout.vue'
 import Signin from './components/Signin.vue'
 import IndexFeature from './components/IndexFeature.vue'
 import LessonAdmin from './components/admin/LessonAdmin.vue'
 import CouponAdmin from './components/admin/CouponAdmin.vue'
 import Order from './components/admin/Order.vue'
 
+
 Vue.use(Router)
 
 export default new Router({
-  routes: [
+  routes: [   
     {
       path: '/',      
       component: Home,
@@ -34,6 +36,11 @@ export default new Router({
           path: 'lesson',
           name: 'lesson',
           component: Lesson 
+        },
+        {
+          path: 'checkout',
+          name: 'checkout',
+          component: Checkout
         },
         {
           path: 'lesson/:id',
@@ -68,6 +75,10 @@ export default new Router({
       ]
       // meta: {requiresAuth: true}
     },    
+     {
+      path: '*',
+      redirect: '/'
+    },
     // {
     //   path: '/about',
     //   name: 'about',

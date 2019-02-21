@@ -8,7 +8,7 @@
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
         >
           <h1 class="h2">折價券列表</h1>
-          <button @click="openModal(true, undefined ,'reserve')" type="button" class="btn btn-outline-primary">新建折扣碼</button>
+          <button @click="openModal(true)" type="button" class="btn btn-outline-primary">新建折扣碼</button>
         </div>
         <div class="table-responsive">
           <table class="table mt-4">
@@ -33,13 +33,14 @@
                   <span v-else>未啟用</span>
                 </td>
                 <td>
-                  <button @click="openModal(item)" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
+                  <button @click="openModal(false, item)" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
                   <button @click="deleteCoupon(item.id)" class="btn btn-outline-dark btn-sm">刪除</button>
                 </td>
               </tr>
             </tbody>
           </table>          
-          <!-- <Pagination :pagination-info="pagination" v-on:changePage-getProduct="getProducts"></Pagination> -->
+
+          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getCoupons"></Pagination>
         </div>
       </main>
     </div>
@@ -97,7 +98,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-            <button @click="addCoupon" type="button" class="btn btn-primary">確認</button>
+            <button @click="addCoupon(tempCoupon.id)" type="button" class="btn btn-primary">確認</button>
           </div>
         </div>
       </div>
@@ -141,46 +142,58 @@ import $ from 'jquery'
 import moment from 'moment'
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
+import Pagination from '@/components/Pagination.vue'
 
 export default {
     name: 'couponAdmin',    
     data(){
       return {
         coupons: {},
-        tempCoupon: {}
+        tempCoupon: {},
+        pagination: {},
+        isNew: false        
       }
     },
     filters: {
       dateType(date){
         return moment(date, 'x').format('YYYY-MM-DD')
       }
-    },
-    computed: {
-      
-    },
+    },    
     methods: {
       getCoupons(page = 1){
         const vm = this;
         const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`;
         this.$http.get(api).then((res) => {
-          console.log(res.data)
-          // res.data.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD')}) //轉換日期格式
+          console.log(res.data)          
+          vm.pagination = res.data.pagination
           vm.coupons = JSON.parse(JSON.stringify(res.data.coupons))
           vm.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD')}) //轉換日期格式
         })
       },
-      addCoupon(){
+      addCoupon(id){
         const vm = this;
-        const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
-        const data = {
+        let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
+        let methods = 'post' 
+        let data = {
           "title": vm.tempCoupon.title,
           "is_enabled": vm.tempCoupon.is_enabled,
           "percent": vm.tempCoupon.percent,
           "due_date": moment(vm.tempCoupon.due_date).format('x'),
           "code": vm.tempCoupon.code
         }
+        if(!vm.isNew){
+          api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${id}`;
+          methods = 'put'
+          data = {
+            "title": vm.tempCoupon.title,
+            "is_enabled": vm.tempCoupon.is_enabled,
+            "percent": vm.tempCoupon.percent,
+            "due_date": moment(vm.tempCoupon.due_date).format('x'),
+            "code": vm.tempCoupon.code            
+          }
+        }
         console.log(data)
-        this.$http.post(api, {"data": data}).then((res) => {
+        this.$http[methods](api, {"data": data}).then((res) => {
             console.log(res.data)
             if(res.data.success){
               vm.getCoupons();
@@ -188,10 +201,15 @@ export default {
             }
         })
       },
-      openModal(coupon){
+      openModal(bool, coupon){        
+        if(bool){
+          this.tempCoupon = {}
+          this.isNew = true
+        }else{
+          this.tempCoupon = Object.assign({}, coupon)
+          this.isNew = false
+        }                 
         $('#couponModal').modal('show')  
-        this.tempCoupon = Object.assign({}, coupon)
-        // this.tempCoupon = {}
       },
       closeModal(){
         $('#couponModal').modal('hide')  
@@ -208,7 +226,8 @@ export default {
       }
     },
     components:{
-        SidebarAdmin
+        SidebarAdmin,
+        Pagination
     },
     created(){
       const vm = this
