@@ -1,7 +1,8 @@
 <template>
     <div>
         <top-banner>建立訂單</top-banner>
-        <div class="container">
+        <div class="container">   
+            <oder-status-bar :status="status"></oder-status-bar>
             <div class="row my-5">
                 <div class="col-8">
                     <div class="row justify-content-center">                        
@@ -101,6 +102,7 @@
 <script>
 
 import TopBanner from '@/components/front/TopBanner.vue'
+import OderStatusBar from '@/components/front/OrderStatusBar.vue'
 
 export default {
     name: 'checkout',
@@ -116,7 +118,12 @@ export default {
                     address: '',
                     email: ''
                 }
-            }
+            },
+            status: 1
+            // activeStatus: {
+            //     'bg-primary': true,
+            //     'text-light': true
+            // }
         }
     },
     methods: {
@@ -166,7 +173,8 @@ export default {
         }   
     },
     components: {
-        TopBanner
+        TopBanner,
+        OderStatusBar
     },
     created(){
         this.getCarts()
@@ -175,5 +183,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    
+   
 </style>

@@ -7,18 +7,6 @@ import router from './router'
 import './axios.js'
 import './bus'
 
-// const dictionary = {
-//   zh_TW: {
-//     attributes: {
-//       tel: '電話',
-//       email: '信箱',
-//       name: '姓名',
-//       address: '地址',
-//       message: '留言'
-//     }
-//   }
-// };
-
 
 Vue.use(VeeValidate,{
   dictionary: {
