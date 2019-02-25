@@ -36,6 +36,10 @@ export default {
                     vm.$router.push('/admin')
                 }else{
                     console.log('登入失敗')
+                    this.$swal({
+                        type: 'error',
+                        title: `${response.data.message}`,                        
+                    })
                 }          
             })
         },    

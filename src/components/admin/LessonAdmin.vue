@@ -73,7 +73,7 @@
                 <div class="form-group">
                   <label for="customFile">
                     或 上傳圖片
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i v-if="isLoadingShow" class="fas fa-spinner fa-spin"></i>
                   </label>
                   <input type="file" id="customFile" class="form-control" 
                     ref="files"
@@ -185,7 +185,8 @@ export default {
     return {
       products: [],
       pagination: {},
-      tempProduct: {},      
+      tempProduct: {},    
+      isLoadingShow: false,  
       isNew: true,            
     };
   },
@@ -252,11 +253,13 @@ export default {
         const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`;
         let formData = new FormData();
         let img = this.$refs.files.files[0];
+        vm.isLoadingShow = true
         formData.append('file-to-upload', img)
         this.$http.post(api, formData, {
             headers:{'Content-Type': 'multipart/form-data'}
         }).then((res) => {
             console.log(res.data)
+            vm.isLoadingShow = false
             if(res.data.success){
                 // vm.tempProduct.imageUrl = res.data.imageUrl
                 vm.$set(vm.tempProduct, 'imageUrl', res.data.imageUrl)

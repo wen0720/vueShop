@@ -229,8 +229,7 @@ export default {
         SidebarAdmin,
         Pagination
     },
-    created(){
-      const vm = this
+    created(){      
       this.getCoupons()      
     }
 }

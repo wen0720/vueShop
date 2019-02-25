@@ -16,12 +16,7 @@
 
 <script>
 export default {
-    name: 'orderStatusBar',
-    data(){        
-        return {
-
-        }
-    },
+    name: 'orderStatusBar',    
     props: ['status']
 }
 </script>

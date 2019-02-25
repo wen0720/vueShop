@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
 import zh_TW from 'vee-validate/dist/locale/zh_TW';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 import App from './App.vue'
 import router from './router'
 import './axios.js'
 import './bus'
 
+Vue.use(VueSweetalert2)
 
 Vue.use(VeeValidate,{
   dictionary: {

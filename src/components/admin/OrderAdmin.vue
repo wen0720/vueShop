@@ -51,7 +51,9 @@ export default {
     name: 'order',
     data(){
         return {
-            orders: {},
+            orders: {
+                user: {}
+            },
             pagination: {},            
         }
     },

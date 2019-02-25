@@ -44,7 +44,7 @@
                     </tr>
                 </tfoot>
             </table>                        
-            <router-link to="checkout" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
+            <router-link to="customOrder" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
             <div class="cart__listMask"></div>
         </div>
     </div>    
