@@ -1,5 +1,5 @@
 <template>
-  <div>         
+  <div class="container-fluid">         
     <div class="row">
       <sidebar-admin></sidebar-admin>
 
@@ -8,7 +8,7 @@
           class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
         >
           <h1 class="h2">折價券列表</h1>
-          <button @click="openModal(true)" type="button" class="btn btn-outline-primary">新建折扣碼</button>
+          <button @click="openModal(true, null, 'reserve')" type="button" class="btn btn-outline-primary">新建折扣碼</button>
         </div>
         <div class="table-responsive">
           <table class="table mt-4">
@@ -33,8 +33,8 @@
                   <span v-else>未啟用</span>
                 </td>
                 <td>
-                  <button @click="openModal(false, item)" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
-                  <button @click="deleteCoupon(item.id)" class="btn btn-outline-dark btn-sm">刪除</button>
+                  <button @click="openModal(false, item, 'reserve')" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
+                  <button @click="openModal(null, item, 'delete')" class="btn btn-outline-dark btn-sm">刪除</button>
                 </td>
               </tr>
             </tbody>
@@ -105,9 +105,9 @@
     </div>
 
     <!-- 確認刪除modal -->
-    <!-- <div
+    <div
       class="modal fade"
-      id="delProductModal"
+      id="delCouponModal"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -129,11 +129,11 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-            <button @click="deleteProduct(tempCoupon.id)" type="button" class="btn btn-danger">確認刪除</button>
+            <button @click="deleteCoupon(tempCoupon.id)" type="button" class="btn btn-danger">確認刪除</button>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -153,12 +153,7 @@ export default {
         pagination: {},
         isNew: false        
       }
-    },
-    filters: {
-      dateType(date){
-        return moment(date, 'x').format('YYYY-MM-DD')
-      }
-    },    
+    },       
     methods: {
       getCoupons(page = 1){
         const vm = this;
@@ -197,22 +192,31 @@ export default {
             console.log(res.data)
             if(res.data.success){
               vm.getCoupons();
-              vm.closeModal()
+              vm.closeModal('reserve')
             }
         })
       },
-      openModal(bool, coupon){        
-        if(bool){
-          this.tempCoupon = {}
-          this.isNew = true
-        }else{
+      openModal(bool, coupon, style){      
+        if(style === 'reserve'){
+          if(bool){
+            this.tempCoupon = {}
+            this.isNew = true
+          }else{
+            this.tempCoupon = Object.assign({}, coupon)
+            this.isNew = false
+          }                 
+          $('#couponModal').modal('show')  
+        }else if(style === 'delete'){
           this.tempCoupon = Object.assign({}, coupon)
-          this.isNew = false
-        }                 
-        $('#couponModal').modal('show')  
+          $('#delCouponModal').modal('show') 
+        }          
       },
-      closeModal(){
-        $('#couponModal').modal('hide')  
+      closeModal(style){
+        if(style === 'reserve'){
+          $('#couponModal').modal('hide')  
+        }else if(style === 'delete'){
+          $('#delCouponModal').modal('hide')
+        }
       },
       deleteCoupon(id){
         const vm = this;
@@ -220,7 +224,8 @@ export default {
         this.$http.delete(api).then((res) => {
             console.log(res.data)
             if(res.data.success){
-              vm.getCoupons();
+              vm.getCoupons();           
+              vm.closeModal('delete')   
             }
         })
       }

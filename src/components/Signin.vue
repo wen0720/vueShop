@@ -8,7 +8,7 @@
             <input v-model="password" type="password" id="inputPassword" class="form-control mb-3" placeholder="Password" required>
             <div class="checkbox mb-3">
                 <label>
-                <input type="checkbox" value="remember-me"> Remember me
+                <input v-model="handleAccount" type="checkbox" value="remember-me"> Remember me
                 </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>       
@@ -17,14 +17,27 @@
 </template>
 
 <script>
+import CryptoJS from 'crypto-js'
+
 export default {
     name: 'signIn',
     data(){
         return {
             username: '',
-            password: ''
+            password: '',
+            handleAccount: false,
         }
     },
+    computed: {
+        encryptUsername(){
+            const vm = this
+            return CryptoJS.AES.encrypt(vm.username, 'justLove').toString()
+        },
+        encryptPassword(){
+            const vm = this
+            return CryptoJS.AES.encrypt(vm.password, 'justLove').toString()
+        }        
+    }, 
     methods: {
          signIn(){
             const vm = this;
@@ -32,7 +45,12 @@ export default {
             this.$http.post(api, {'username': vm.username, 'password': vm.password}).then((response) => {
                 console.log(response.data)      
                 if(response.data.success){
-                    console.log('成功登入')
+                    console.log('成功登入')        
+                    if(vm.handleAccount){
+                        vm.$cookies.set('username', vm.encryptUsername, '1D', '/', null, false)
+                        vm.$cookies.set('password', vm.encryptPassword, '1D', '/', null, false)
+                    }                                
+                    console.log(vm.$cookies)
                     vm.$router.push('/admin')
                 }else{
                     console.log('登入失敗')
@@ -42,8 +60,16 @@ export default {
                     })
                 }          
             })
-        },    
-    }
+        },            
+    },
+    created(){
+        const vm = this
+        if( this.$cookies.isKey('username') && this.$cookies.isKey("password") ){
+            this.handleAccount = true
+            this.username = CryptoJS.AES.decrypt(vm.$cookies.get('username'), 'justLove').toString(CryptoJS.enc.Utf8)
+            this.password = CryptoJS.AES.decrypt(vm.$cookies.get('password'), 'justLove').toString(CryptoJS.enc.Utf8)
+        }
+    }        
 }
 </script>
 

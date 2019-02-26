@@ -1,48 +1,50 @@
 <template>
   <div>     
     <!-- <message-alert></message-alert> -->
-    <div class="row">
-      <sidebar-admin></sidebar-admin>
+    <div class="container-fluid">
+      <div class="row">
+        <sidebar-admin></sidebar-admin>
 
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
-        >
-          <h1 class="h2">產品列表</h1>
-          <button @click="openModal(true, undefined ,'reserve')" type="button" class="btn btn-outline-primary">新建商品</button>
-        </div>
-        <div class="table-responsive">
-          <table class="table mt-4">
-            <thead>
-              <tr>
-                <th width="120">分類</th>
-                <th>產品名稱</th>
-                <th width="120">原價</th>
-                <th width="120">售價</th>
-                <th width="100">是否啟用</th>
-                <th width="130">編輯</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item) in products" :key="item.id">
-                <td>{{ item.category }}</td>
-                <td>{{ item.title }}</td>
-                <td class="text-right">{{ item.origin_price}}</td>
-                <td class="text-right">{{ item.price}}</td>
-                <td>
-                  <span v-if="item.is_enabled" class="text-success">啟用</span>
-                  <span v-else>未啟用</span>
-                </td>
-                <td>
-                  <button @click="openModal(false, item, 'reserve')" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
-                  <button @click="openModal(undefined, item, 'delete')" class="btn btn-outline-dark btn-sm">刪除</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>          
-          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getProducts"></Pagination>
-        </div>
-      </main>
+        <main role="main" class="ml-sm-auto col-10">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 px-4"
+          >
+            <h1 class="h2">產品列表</h1>
+            <button @click="openModal(true, undefined ,'reserve')" type="button" class="btn btn-outline-primary">新建商品</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table mt-4">
+              <thead>
+                <tr>
+                  <th width="120">分類</th>
+                  <th>產品名稱</th>
+                  <th width="120">原價</th>
+                  <th width="120">售價</th>
+                  <th width="100">是否啟用</th>
+                  <th width="130">編輯</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item) in products" :key="item.id">
+                  <td>{{ item.category }}</td>
+                  <td>{{ item.title }}</td>
+                  <td class="text-right">{{ item.origin_price | currency}}</td>
+                  <td class="text-right">{{ item.price | currency}}</td>
+                  <td>
+                    <span v-if="item.is_enabled" class="text-success">啟用</span>
+                    <span v-else>未啟用</span>
+                  </td>
+                  <td>
+                    <button @click="openModal(false, item, 'reserve')" class="btn btn-outline-primary btn-sm mr-2">編輯</button>
+                    <button @click="openModal(undefined, item, 'delete')" class="btn btn-outline-dark btn-sm">刪除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>          
+            <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getProducts"></Pagination>
+          </div>
+        </main>
+      </div>
     </div>
 
     <!-- 新增產品modal -->
@@ -193,7 +195,7 @@ export default {
   components:{
     SidebarAdmin,
     Pagination
-  },
+  },  
   methods: {
     getProducts(page = 1) {
       const vm = this;
@@ -240,11 +242,17 @@ export default {
           method = 'put'
       }
       console.log(data)
+      
       this.$http[method](api, {"data": data}).then((res) => {
           console.log(res.data)
           if(res.data.success){
               vm.getProducts(vm.pagination.current_page);
               vm.closeModal('reserve');
+          }else{
+            this.$swal({
+                type: 'error',
+                title: `${res.data.message}`,                        
+            })
           }
       })
     },

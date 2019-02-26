@@ -25,8 +25,8 @@
                                     <h5 class="card-title">{{ item.title }}<span class="badge badge-light float-right text-muted">{{ item.category }}</span></h5>
                                     <p class="card-text">{{ item.description }}</p>     
                                     <div class="d-flex justify-content-between align-items-baseline">                                    
-                                        <del class="h6">{{ item.origin_price }}元</del>
-                                        <div class="h5">{{ item.price }}元</div>
+                                        <del class="h6">{{ item.origin_price | currency }}元</del>
+                                        <div class="h5">{{ item.price | currency }}元</div>
                                   </div>                               
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">                                    
@@ -67,7 +67,7 @@
                                         </form>
                                         <div class="row no-gutters mt-3">
                                             <div class="col-6 d-flex">
-                                                <span v-if="tempProduct.qty" class="h5 align-self-center">總計 ${{ tempProduct.price * tempProduct.qty }}</span>                                                
+                                                <span v-if="tempProduct.qty" class="h5 align-self-center">總計 {{ tempProduct.price * tempProduct.qty | currency }}</span>                                                
                                             </div>
                                             <div class="col-6 text-right">
                                                 <a @click.prevent="addToCart(tempProduct.id, tempProduct.qty)" href="#" class="btn btn-primary">加入購物車</a>

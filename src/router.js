@@ -5,7 +5,6 @@ import Home from './views/Home.vue'
 import Backstage from './views/Backstage.vue'
 
 import Lesson from './components/front/Lesson.vue'
-import Class from './components/front/Class.vue'
 import CustomOrder from './components/front/CustomOrder.vue'
 import Checkout from './components/front/Checkout.vue'
 import Signin from './components/Signin.vue'
@@ -42,12 +41,7 @@ export default new Router({
           path: 'CustomOrder',
           name: 'customOrder',
           component: CustomOrder
-        },
-        {
-          path: 'lesson/:id',
-          name: 'class',
-          component: Class
-        },
+        },        
         {
           path: 'checkout/:id',
           name: 'checkout',

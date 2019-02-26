@@ -30,17 +30,17 @@
                         </div>
                     </td>
                     <td class="align-middle">{{ item.qty }}/{{ item.product.unit }}</td>
-                    <td class="align-middle text-right">{{ item.final_total }}</td>
+                    <td class="align-middle text-right">{{ item.final_total | currency }}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                     <td colspan="3" class="text-right">總計</td>
-                    <td class="text-right">{{ cart.total }}</td>
+                    <td class="text-right">{{ cart.total | currency }}</td>
                     </tr>
                     <tr>
                     <td colspan="3" class="text-right text-success">折扣價</td>
-                    <td class="text-right text-success">{{ cart.final_total }}</td>
+                    <td class="text-right text-success">{{ cart.final_total | currency }}</td>
                     </tr>
                 </tfoot>
             </table>                        
@@ -77,16 +77,17 @@
                 return this.cart.carts.length
             }      
         },
-        created(){
-            console.log('cart created')
+        created(){            
             const vm = this
-            this.$bus.$on('closeCart', ()=>{
-                console.log('emit成功')
+            this.$bus.$on('closeCart', ()=>{                
                 if(vm.showCart){
                     vm.showCart = false;
                 }                
             })
-        }        
+        },
+        beforeDestroy(){
+            this.$bus.$off('closeCart')
+        }   
     }
 </script>
 

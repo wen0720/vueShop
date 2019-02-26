@@ -6,8 +6,8 @@
                     <h2>Fitness Life</h2>
                     <p>Your Personal Coach</p>                    
                 </div>                        
-                <div class="mainbtn gradient01">
-                    <a href="./form.html">立即購課</a>                    
+                <div class="mainbtn gradient01">                              
+                    <router-link to="lesson">立即購課</router-link>
                 </div>        
             </div>
         </header>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
 import zh_TW from 'vee-validate/dist/locale/zh_TW';
 import VueSweetalert2 from 'vue-sweetalert2';
+import VueCookies from 'vue-cookies'
 
 import App from './App.vue'
 import router from './router'
@@ -9,6 +10,7 @@ import './axios.js'
 import './bus'
 
 Vue.use(VueSweetalert2)
+Vue.use(VueCookies)
 
 Vue.use(VeeValidate,{
   dictionary: {
@@ -26,6 +28,12 @@ Vue.use(VeeValidate,{
 Validator.localize('zh_TW', zh_TW); // 換成中文語系
 
 Vue.config.productionTip = false
+
+Vue.filter('currency', (val) => {
+  if(!val) return '$0'
+  const re = '\\d(?=(\\d{' + 3 + '})+' + '$' + ')'
+  return '$' + Number(val).toFixed(Math.max(0)).replace(new RegExp(re, 'g'), '$&,')
+})
 
 
 const app = new Vue({
