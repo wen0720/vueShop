@@ -6,5 +6,8 @@ module.exports = {
                         @import "@/assets/sass/_default.scss";`
             }
         }
-    }
+    },
+    publicPath: process.env.NODE_ENV === 'production'
+        ? '/dist/'
+        : '/',
 }
