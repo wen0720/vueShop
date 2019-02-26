@@ -327,7 +327,7 @@ export default {
             h3{
                 font-size: 32px;
                 font-weight: 500;
-                margin: 20px 0;
+                margin: 35px 0 20px;
                 @include respond-to(ld){
                     font-size: 28px;
                 }

@@ -47,8 +47,8 @@ export default {
                 if(response.data.success){
                     console.log('成功登入')        
                     if(vm.handleAccount){
-                        vm.$cookies.set('username', vm.encryptUsername, '1D', '/', null, false)
-                        vm.$cookies.set('password', vm.encryptPassword, '1D', '/', null, false)
+                        vm.$cookies.set('username', vm.encryptUsername, '1D', '/', null, true)
+                        vm.$cookies.set('password', vm.encryptPassword, '1D', '/', null, true)
                     }                                
                     console.log(vm.$cookies)
                     vm.$router.push('/admin')
