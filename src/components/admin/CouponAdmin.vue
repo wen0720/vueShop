@@ -40,7 +40,7 @@
             </tbody>
           </table>          
 
-          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getCoupons"></Pagination>
+          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminCoupons"></Pagination>
         </div>
       </main>
     </div>
@@ -143,28 +143,28 @@ import moment from 'moment'
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
 import Pagination from '@/components/Pagination.vue'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'couponAdmin',    
     data(){
-      return {
-        coupons: {},
-        tempCoupon: {},
-        pagination: {},
+      return {        
+        tempCoupon: {},        
         isNew: false        
       }
     },       
-    methods: {
-      getCoupons(page = 1){
-        const vm = this;
-        const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`;
-        this.$http.get(api).then((res) => {
-          console.log(res.data)          
-          vm.pagination = res.data.pagination
-          vm.coupons = JSON.parse(JSON.stringify(res.data.coupons))
-          vm.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD')}) //轉換日期格式
-        })
+    computed:{
+      coupons(){
+        return this.$store.state.storeAdmin.coupons
       },
+      pagination(){
+        return this.$store.state.storeAdmin.pagination
+      }
+    },
+    methods: {
+      ...mapActions({
+        getAdminCoupons: 'storeAdmin/getAdminCoupons'
+      }),
       addCoupon(id){
         const vm = this;
         let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
@@ -191,7 +191,7 @@ export default {
         this.$http[methods](api, {"data": data}).then((res) => {
             console.log(res.data)
             if(res.data.success){
-              vm.getCoupons();
+              vm.getAdminCoupons({page: vm.pagination.current_page});
               vm.closeModal('reserve')
             }
         })
@@ -224,7 +224,7 @@ export default {
         this.$http.delete(api).then((res) => {
             console.log(res.data)
             if(res.data.success){
-              vm.getCoupons();           
+              vm.getAdminCoupons({page: vm.pagination.current_page});          
               vm.closeModal('delete')   
             }
         })
@@ -234,8 +234,8 @@ export default {
         SidebarAdmin,
         Pagination
     },
-    created(){      
-      this.getCoupons()      
+    created(){             
+      this.getAdminCoupons({}) // 可帶空物件，因預設{page:1}
     }
 }
 </script>

@@ -6,6 +6,7 @@ import VueCookies from 'vue-cookies'
 
 import App from './App.vue'
 import router from './router'
+import { store } from './store'
 import './axios.js'
 import './bus'
 
@@ -38,6 +39,7 @@ Vue.filter('currency', (val) => {
 
 const app = new Vue({
   router,
+  store: store,
   render: h => h(App)
 }).$mount('#app')
 

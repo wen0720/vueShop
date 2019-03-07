@@ -35,7 +35,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getOrders"></Pagination>
+                    <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminOrders"></Pagination>
                 </div>
             </main>
         </div>
@@ -46,39 +46,31 @@
 import moment from 'moment'
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
 import Pagination from '@/components/Pagination.vue'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'order',
     data(){
         return {
-            orders: {
-                user: {}
-            },
             pagination: {},            
         }
     },
-    methods: {
-        getOrders(page = 1){
-            const vm = this;
-            const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${page}`;
-            this.$http.get(api).then((res) => {
-                console.log(res.data)
-                if(res.data.success){
-                    vm.orders = res.data.orders
-                    vm.orders.forEach(item => {
-                        item.create_at = moment(item.create_at, 'X').format('YYYY-MM-DD')
-                    });
-                    vm.pagination = res.data.pagination;
-                }
-            })
+    computed: {
+        orders(){
+            return this.$store.state.storeAdmin.orders
         }
+    },
+    methods: {
+        ...mapActions({
+            getAdminOrders: 'storeAdmin/getAdminOrders'
+        })
     },
     components:{
         SidebarAdmin,
         Pagination
     },
-    created(){
-        this.getOrders();
+    created(){      
+        this.getAdminOrders({})
     }
 }
 </script>

@@ -38,7 +38,7 @@
                         </div>                        
                     </div>
                     <Pagination :pagination-info="pagination" v-if="currentFilterStyle === '全部商品'"
-                                v-on:changePage-getPagination="getProducts"
+                                v-on:changePage-getPagination="getFrontProducts"
                                 class="my-3"></Pagination>
                 </div>         
 
@@ -93,17 +93,17 @@ import TopBanner from '@/components/front/TopBanner.vue'
 import CartDialog from '@/components/front/CartDialog.vue'
 import Pagination from '@/components/Pagination.vue'
 
+import { mapActions, mapState } from 'vuex'
+
 export default {
     name: 'lesson',
     data(){
-        return {
-            products:[],
+        return {            
             allProducts: [],
             tempProduct: {
                 qty: 1
             },
-            cart: null,
-            pagination: {},
+            cart: null,            
             currentFilterStyle: '全部商品',      
             filterStyleArr: ['全部商品','有氧', '飛輪', '肌力訓練', '基礎瑜珈', '飲食課程', '體驗', '1對1課程']      
         }
@@ -124,20 +124,16 @@ export default {
                     return item.category === this.currentFilterStyle && item.is_enabled
                 })  
             }                                  
-        }          
+        },        
+        ...mapState({
+            products: state => state.storeFront.products,
+            pagination: state => state.storeFront.pagination
+        })  
     },
     methods:{
-        getProducts(page = 1){
-            const vm = this
-            const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/products?page=${page}`                        
-            this.$http.get(api).then((res) => {
-                console.log('[取得這頁商品]',res.data)
-                if(res.data.success){
-                    vm.products = res.data.products
-                    vm.pagination = res.data.pagination;
-                }
-            })
-        },
+        ...mapActions({
+            getFrontProducts: 'storeFront/getFrontProducts'
+        }),        
         getProduct(id){
             const vm = this
             const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${id}`            
@@ -195,14 +191,10 @@ export default {
             this.currentFilterStyle = this.filterStyleArr[idx]
         }
     },
-    created(){
-        this.getProducts();
+    created(){        
+        this.getFrontProducts({})
         this.getCarts()
-        this.getAllProducts();
-        console.log('lesson created')        
+        this.getAllProducts();        
     },
-    mounted(){
-        console.log('lesson mounted')
-    }
 }
 </script>

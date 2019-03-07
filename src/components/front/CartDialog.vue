@@ -73,7 +73,7 @@
             }
         },
         computed: {
-            cartTotal(){
+            cartTotal(){                
                 return this.cart.carts.length
             }      
         },

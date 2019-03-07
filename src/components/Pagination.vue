@@ -27,8 +27,11 @@ export default {
     methods: {
         getPagination(page){
             console.log(page)
-            this.$emit('changePage-getPagination', page)
+            this.$emit('changePage-getPagination', { page }) // { page } 意思就是 { page: page }
         }
+    },
+    created(){
+      console.log('paginationInfo',this.paginationInfo)
     }
 }
 </script>

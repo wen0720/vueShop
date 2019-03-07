@@ -41,7 +41,7 @@
                 </tr>
               </tbody>
             </table>          
-            <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getProducts"></Pagination>
+            <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminProduct"></Pagination>
           </div>
         </main>
       </div>
@@ -176,6 +176,7 @@
 
 
 <script>
+import { mapActions } from "vuex";
 import $ from "jquery";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
@@ -184,9 +185,7 @@ import Pagination from '@/components/Pagination.vue'
 export default {
   name: "lessonAdmin",
   data() {
-    return {
-      products: [],
-      pagination: {},
+    return {            
       tempProduct: {},    
       isLoadingShow: false,  
       isNew: true,            
@@ -196,18 +195,18 @@ export default {
     SidebarAdmin,
     Pagination
   },  
-  methods: {
-    getProducts(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/products?page=${page}`;
-      this.$http.get(api).then(res => {
-        console.log(res.data);
-        if (res.data.success) {
-          vm.products = res.data.products;
-          vm.pagination = res.data.pagination;
-        }
-      });
+  computed: {
+    products(){
+      return this.$store.state.storeAdmin.products
     },
+    pagination(){
+      return this.$store.state.storeAdmin.pagination
+    }
+  },
+  methods: {    
+    ...mapActions({
+      getAdminProduct: 'storeAdmin/getAdminProduct'
+    }),
     openModal(boolForNew, item, style) {
 
       this.$refs.files.value = '' // 每次打開都將上傳檔案的欄位重新設置
@@ -246,7 +245,8 @@ export default {
       this.$http[method](api, {"data": data}).then((res) => {
           console.log(res.data)
           if(res.data.success){
-              vm.getProducts(vm.pagination.current_page);
+              // vm.getProducts(vm.pagination.current_page);
+              vm.getAdminProduct({page:vm.pagination.current_page })
               vm.closeModal('reserve');
           }else{
             this.$swal({
@@ -280,16 +280,15 @@ export default {
       const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${id}`
       this.$http.delete(api).then((res) => {
           if(res.data.success){
-              vm.getProducts();
+              // vm.getProducts();
+              vm.getAdminProduct({page:vm.pagination.current_page })
               vm.closeModal('delete')
           }
       })
     },
   },  
-  created() {    
-    console.log('created lessonAdmin')
-    this.getProducts();        
-    // this.$loading.show();
+  created() {            
+    this.getAdminProduct({page: 1})    
   }
 };
 </script>
