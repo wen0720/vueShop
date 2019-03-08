@@ -103,12 +103,12 @@
 
 import TopBanner from '@/components/front/TopBanner.vue'
 import OrderStatusBar from '@/components/front/OrderStatusBar.vue'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'checkout',
     data(){
-        return {
-            cart: {},
+        return {            
             code: '',
             orderInfo: {
                 message:'',
@@ -119,24 +119,18 @@ export default {
                     email: ''
                 }
             },
-            status: 1
-            // activeStatus: {
-            //     'bg-primary': true,
-            //     'text-light': true
-            // }
+            status: 1            
         }
     },
+    computed: {
+        ...mapState({
+            cart: state => state.storeFront.carts
+        })
+    },
     methods: {
-        getCarts(){
-            const vm = this
-            const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
-            this.$http.get(api).then((res) => {
-                console.log('[取得購物車列表]', res.data)
-                if(res.data.success){
-                    vm.cart = res.data.data                    
-                }
-            })            
-        },
+        ...mapActions({
+            getCarts: 'storeFront/getCarts'
+        }),
         deleteCartProduct(id){
             const vm = this
             const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`

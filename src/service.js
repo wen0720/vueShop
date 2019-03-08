@@ -20,9 +20,13 @@ export default {
     getFrontProducts(page = 1){         // 取得前台產品
         return Vue.axios.get(`${baseUrl}/products?page=${page}`)
     },
-    getCart(){          // 取得購物車
+    getCarts(){          // 取得購物車
         return Vue.axios.get(`${baseUrl}/cart`)
-    }
+    },
+    // addToCart(id, qty=1){
+    //     const data = { "product_id": id, "qty": qty }
+    //     return Vue.axios.post(`${baseUrl}/cart`, { data })
+    // }
     
     // addAdminProduct(data){
     //     return Vue.axios.post(`${baseUrl}/admin/product`, {"data": data})

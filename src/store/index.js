@@ -70,7 +70,8 @@ const storeFront = {
     namespaced: true,
     state: {
         products: [],
-        pagination: {}
+        pagination: {},
+        carts: {}
     },
     mutations: {
         getFrontProducts(state, payload){
@@ -79,6 +80,9 @@ const storeFront = {
         setFrontPagination(state, payload){
             state.pagination = payload.pagination
         },
+        setCarts(state, payload){
+            state.carts = payload.carts
+        }
     },
     actions: {
         getFrontProducts({ commit }, payload){
@@ -90,7 +94,20 @@ const storeFront = {
                 }
             })
         },
-        
+        getCarts({ commit }){
+            service.getCarts().then((res) => {
+                console.log('[Action: getCarts ]',res.data)
+                if(res.data.success){
+                    commit('setCarts', {carts: res.data.data})
+                }
+            })
+        },
+        // addToCart({ commit }, payload){
+        //     service.addToCart(payload.id, payload.qty).then((res) => {
+        //         console.log('[Action: addToCart]', res.data)
+        //         commit('addToCart')
+        //     })
+        // }
     }
 }
 
@@ -112,6 +129,8 @@ export {
  *      產品的加入，沒有需要儲存資料，只是一個 call api 的動作，有需要加入vuex嗎？
  *  問題2
  *      原本在admin order頁面，order的初始資料要帶user，用vuex之後就不用了
+ *  問題3
+ *      前端不需要記住的狀態，其實就不用放在vuex裡才對？
  */
 
 

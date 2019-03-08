@@ -81,7 +81,7 @@
                 </div>                            
             </div>
         </div>   
-        <cartDialog v-on:deleteCartProduct="getCarts" v-if="cart !== null" :cart="cart"></cartDialog>
+        <cartDialog v-on:deleteCartProduct="getCarts"  :cart="cart"></cartDialog>
     </div> 
 </template>
 
@@ -102,8 +102,7 @@ export default {
             allProducts: [],
             tempProduct: {
                 qty: 1
-            },
-            cart: null,            
+            },            
             currentFilterStyle: '全部商品',      
             filterStyleArr: ['全部商品','有氧', '飛輪', '肌力訓練', '基礎瑜珈', '飲食課程', '體驗', '1對1課程']      
         }
@@ -127,12 +126,14 @@ export default {
         },        
         ...mapState({
             products: state => state.storeFront.products,
-            pagination: state => state.storeFront.pagination
+            pagination: state => state.storeFront.pagination,
+            cart: state => state.storeFront.carts             
         })  
     },
     methods:{
         ...mapActions({
-            getFrontProducts: 'storeFront/getFrontProducts'
+            getFrontProducts: 'storeFront/getFrontProducts',
+            getCarts: 'storeFront/getCarts'
         }),        
         getProduct(id){
             const vm = this
@@ -175,26 +176,19 @@ export default {
                     vm.getCarts();
                 }
             })
-        },
-        getCarts(){
-            const vm = this
-            const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
-            this.$http.get(api).then((res) => {
-                console.log('[取得購物車列表]', res.data)
-                if(res.data.success){
-                    vm.cart = res.data.data                    
-                }
-            })            
-        },
-        changeFilterStyle(idx){                       
-            // this.filterStyle = event.target.textContent            
+        },        
+        changeFilterStyle(idx){                                   
             this.currentFilterStyle = this.filterStyleArr[idx]
         }
     },
     created(){        
+        console.log('lesson created')
         this.getFrontProducts({})
         this.getCarts()
         this.getAllProducts();        
     },
+    mounted(){
+        console.log('lesson mounted')
+    }
 }
 </script>

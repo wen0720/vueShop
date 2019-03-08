@@ -73,17 +73,21 @@
             }
         },
         computed: {
-            cartTotal(){                
-                return this.cart.carts.length
+            cartTotal(){                                     
+                return  this.cart.carts ? this.cart.carts.length : null  // 等cart確定傳進來之後
             }      
         },
-        created(){            
+        created(){                 
+            console.log('cartdialog created')       
             const vm = this
             this.$bus.$on('closeCart', ()=>{                
                 if(vm.showCart){
                     vm.showCart = false;
                 }                
             })
+        },
+        mounted(){
+            console.log('cartdialog mounted')
         },
         beforeDestroy(){
             this.$bus.$off('closeCart')
