@@ -3,32 +3,32 @@
         <nav class="gradient01">
             <div class="navbox">
                 <router-link to="/" tag="h1"><p>始壯哥</p></router-link>
-                <ul>                    
+                <ul>
                     <li>
-                        <a @click.prevent="signOut" href="#">登出</a>    
-                    </li>                    
+                        <a @click.prevent="signOut" href="#">登出</a>
+                    </li>
                 </ul>
-            </div>                
+            </div>
         </nav>
     </div>
 </template>
 
 <script>
 export default {
-    name:'navbox_admin',    
-    methods: {
-        signOut(){
-            // const vm = this;
-            const api = `${process.env.VUE_APP_API_BASE_URL}/logout`
-            this.$http.post(api).then((response) => {
-                console.log(response.data)
-                if(response.data.success){
-                    console.log('已登出')
-                    this.$router.push('/')
-                }
-            })
-        },        
+  name: 'navbox_admin',
+  methods: {
+    signOut () {
+      // const vm = this;
+      const api = `${process.env.VUE_APP_API_BASE_URL}/logout`
+      this.$http.post(api).then((response) => {
+        console.log(response.data)
+        if (response.data.success) {
+          console.log('已登出')
+          this.$router.push('/')
+        }
+      })
     }
+  }
 }
 </script>
 
@@ -46,13 +46,13 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         background: url(../assets/images/img-logo.png) no-repeat center;
-        background-size: contain; 
+        background-size: contain;
         margin: 0 0 0 20px;
         height: 77px;
         width: 120px;
-        float: left;    
+        float: left;
     }
-     nav{    
+     nav{
         position: fixed;
         top:0;
         width: 100%;
@@ -62,19 +62,19 @@ export default {
 
     .navbox{
         max-width: 1520px;
-        margin: 0 auto;    
+        margin: 0 auto;
         @include clearfix;
         ul{
             float: right;
             li{
-                display: inline-block;            
+                display: inline-block;
                 a{
-                    display: block;                    
+                    display: block;
                     padding: 25px 20px;
                     font-size: 15px;
                     color: #fff;
                 }
             }
         }
-    } 
+    }
 </style>

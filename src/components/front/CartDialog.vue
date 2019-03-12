@@ -5,19 +5,13 @@
             <i class="fas fa-cart-plus"></i>
         </div>
         <div class="cart__list rounded-sm" :class="{'d-none': !showCart}">
-            <p class="h6 pt-2 pb-3">已選購商品</p>         
+            <p class="h6 pt-2 pb-3">已選購商品</p>
             <table class="table">
-                <!-- <thead>
-                    <th></th>
-                    <th>品名</th>
-                    <th>數量</th>
-                    <th>單價</th>
-                </thead> -->
                 <tbody>
                     <tr v-for="item in cart.carts"
                         :key="item.id">
                     <td class="align-middle">
-                        <button type="button" 
+                        <button type="button"
                             class="btn btn-outline-danger btn-sm"
                             @click="deleteCartProduct(item.id)">
                         <i class="far fa-trash-alt"></i>
@@ -43,56 +37,54 @@
                     <td class="text-right text-success">{{ cart.final_total | currency }}</td>
                     </tr>
                 </tfoot>
-            </table>                        
-            <router-link to="customOrder" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
+            </table>
+            <router-link v-if="cartTotal !== 0" to="customOrder" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
+            <p v-else class="border border-secondary text-center py-2 d-block rounded">尚未選購</p>
             <div class="cart__listMask"></div>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script>
-    export default {
-        name: 'cartDialog',
-        data(){
-            return {
-                showCart: false
-            }
-        },
-        props: ['cart'],
-        methods:{
-            deleteCartProduct(id){
-                const vm = this
-                const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
-                this.$http.delete(api).then((res) => {
-                    console.log('[刪除購物車物品]', res.data)
-                    vm.$emit('deleteCartProduct')
-                })            
-            },
-            openCart(){
-                this.showCart = true
-            }
-        },
-        computed: {
-            cartTotal(){                                     
-                return  this.cart.carts ? this.cart.carts.length : null  // 等cart確定傳進來之後
-            }      
-        },
-        created(){                 
-            console.log('cartdialog created')       
-            const vm = this
-            this.$bus.$on('closeCart', ()=>{                
-                if(vm.showCart){
-                    vm.showCart = false;
-                }                
-            })
-        },
-        mounted(){
-            console.log('cartdialog mounted')
-        },
-        beforeDestroy(){
-            this.$bus.$off('closeCart')
-        }   
+export default {
+  name: 'cartDialog',
+  data () {
+    return {
+      showCart: false
     }
+  },
+  props: ['cart'],
+  methods: {
+    deleteCartProduct (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
+      this.$http.delete(api).then((res) => {
+        console.log('[刪除購物車物品]', res.data)
+        vm.$emit('deleteCartProduct')
+      })
+    },
+    openCart () {
+      this.showCart = true
+    }
+  },
+  computed: {
+    cartTotal () {
+      return this.cart.carts ? this.cart.carts.length : null // 等cart確定傳進來之後
+    }
+  },
+  created () {
+    console.log('cartdialog created')
+    const vm = this
+    this.$bus.$on('closeCart', () => {
+      if (vm.showCart) {
+        vm.showCart = false
+      }
+    })
+  },
+  beforeDestroy () {
+    this.$bus.$off('closeCart')
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -104,15 +96,15 @@
         width: 70px;
         height: 70px;
         border-radius: 50%;
-        box-shadow: 1px 1px 3px rgba(0,0,0,.2);   
-        z-index: 2;         
+        box-shadow: 1px 1px 3px rgba(0,0,0,.2);
+        z-index: 2;
         &__btn{
             @include translate-center;
             i{
                 font-size:28px;
                 color:#ff5d42;
             }
-        }        
+        }
         &__list{
             position: absolute;
             bottom: 80px;

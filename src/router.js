@@ -7,21 +7,21 @@ import Backstage from './views/Backstage.vue'
 import Lesson from './components/front/Lesson.vue'
 import CustomOrder from './components/front/CustomOrder.vue'
 import Checkout from './components/front/Checkout.vue'
+import LessonInfo from './components/front/LessonInfo.vue'
 import Signin from './components/Signin.vue'
 import IndexFeature from './components/IndexFeature.vue'
 import LessonAdmin from './components/admin/LessonAdmin.vue'
 import CouponAdmin from './components/admin/CouponAdmin.vue'
 import OrderAdmin from './components/admin/OrderAdmin.vue'
 
-
 Vue.use(Router)
 
 export default new Router({
-  routes: [   
+  routes: [
     {
-      path: '/',      
+      path: '/',
       component: Home,
-      children:[
+      children: [
         {
           path: '',
           name: 'indexfeature',
@@ -35,20 +35,25 @@ export default new Router({
         {
           path: 'lesson',
           name: 'lesson',
-          component: Lesson 
+          component: Lesson
+        },
+        {
+          path: 'lesson/:id',
+          name: 'LessonInfo',
+          component: LessonInfo
         },
         {
           path: 'CustomOrder',
           name: 'customOrder',
           component: CustomOrder
-        },        
+        },
         {
           path: 'checkout/:id',
           name: 'checkout',
           component: Checkout
         }
       ]
-    },            
+    },
     {
       path: '/admin',
       // name: 'admin',
@@ -58,26 +63,26 @@ export default new Router({
           path: '',
           name: 'admin',
           component: LessonAdmin,
-          meta: {requiresAuth: true}
+          meta: { requiresAuth: true }
         },
         {
           path: 'coupon',
           name: 'coupon',
           component: CouponAdmin,
-          meta: {requiresAuth: true}
+          meta: { requiresAuth: true }
         },
         {
           path: 'order',
           name: 'order',
           component: OrderAdmin,
-          meta: {requiresAuth: true}
+          meta: { requiresAuth: true }
         }
-      ]      
-    },    
-     {
+      ]
+    },
+    {
       path: '*',
       redirect: '/'
-    },
+    }
     // {
     //   path: '/about',
     //   name: 'about',

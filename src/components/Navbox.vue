@@ -1,32 +1,32 @@
 <template>
     <nav class="gradient01">
         <div class="navbox">
-            <router-link to="/" tag="h1"><p>始壯哥</p></router-link>            
+            <router-link to="/" tag="h1"><p>始壯哥</p></router-link>
             <ul>
                 <!-- <li><a href="./form.html">找教練</a></li> -->
                 <!-- <li>
-                    <router-link to="/">找教練</router-link>    
+                    <router-link to="/">找教練</router-link>
                 </li> -->
                 <li>
-                    <router-link to="/signin">管理後台</router-link>    
+                    <router-link to="/signin">管理後台</router-link>
                 </li>
                 <li>
-                    <router-link to="/lesson">課程列表</router-link>    
-                </li>                                           
+                    <router-link to="/lesson">課程列表</router-link>
+                </li>
             </ul>
-        </div>                
+        </div>
     </nav>
 </template>
 
 <script>
 export default {
-    name: 'navbox',
-    methods: {}
+  name: 'navbox',
+  methods: {}
 }
 </script>
 
-<style lang="scss" scoped>    
-    
+<style lang="scss" scoped>
+
    // gradient color
     .gradient01{
         background: #ff5d42; /* Old browsers */
@@ -40,13 +40,13 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         background: url(../assets/images/img-logo.png) no-repeat center;
-        background-size: contain; 
+        background-size: contain;
         margin: 0 0 0 20px;
         height: 77px;
         width: 120px;
-        float: left;    
+        float: left;
     }
-     nav{    
+     nav{
         position: fixed;
         top:0;
         width: 100%;
@@ -59,20 +59,20 @@ export default {
 
     .navbox{
         max-width: 1520px;
-        margin: 0 auto;    
+        margin: 0 auto;
         // transform: rotate(1deg);
         @include clearfix;
         ul{
             float: right;
             li{
-                display: inline-block;            
+                display: inline-block;
                 a{
-                    display: block;                    
+                    display: block;
                     padding: 25px 20px;
                     font-size: 15px;
                     color: #fff;
                 }
             }
         }
-    } 
+    }
 </style>

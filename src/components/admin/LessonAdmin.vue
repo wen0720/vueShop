@@ -1,6 +1,5 @@
 <template>
-  <div>     
-    <!-- <message-alert></message-alert> -->
+  <div>
     <div class="container-fluid">
       <div class="row">
         <sidebar-admin></sidebar-admin>
@@ -40,7 +39,7 @@
                   </td>
                 </tr>
               </tbody>
-            </table>          
+            </table>
             <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminProduct"></Pagination>
           </div>
         </main>
@@ -77,7 +76,7 @@
                     或 上傳圖片
                     <i v-if="isLoadingShow" class="fas fa-spinner fa-spin"></i>
                   </label>
-                  <input type="file" id="customFile" class="form-control" 
+                  <input type="file" id="customFile" class="form-control"
                     ref="files"
                     @change="uploadFile">
                 </div>
@@ -90,7 +89,7 @@
               <div class="col-sm-8">
                 <div class="form-group">
                   <label for="title">標題</label>
-                  <input v-model="tempProduct.title" type="text" class="form-control" id="title" placeholder="請輸入標題">                  
+                  <input v-model="tempProduct.title" type="text" class="form-control" id="title" placeholder="請輸入標題">
                 </div>
 
                 <div class="form-row">
@@ -174,125 +173,117 @@
   </div>
 </template>
 
-
 <script>
-import { mapActions } from "vuex";
-import $ from "jquery";
-import "bootstrap/dist/js/bootstrap.bundle.js";
+import { mapActions } from 'vuex'
+import $ from 'jquery'
+import 'bootstrap/dist/js/bootstrap.bundle.js'
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
 import Pagination from '@/components/Pagination.vue'
 
 export default {
-  name: "lessonAdmin",
-  data() {
-    return {            
-      tempProduct: {},    
-      isLoadingShow: false,  
-      isNew: true,            
-    };
+  name: 'lessonAdmin',
+  data () {
+    return {
+      tempProduct: {},
+      isLoadingShow: false,
+      isNew: true
+    }
   },
-  components:{
+  components: {
     SidebarAdmin,
     Pagination
-  },  
+  },
   computed: {
-    products(){
+    products () {
       return this.$store.state.storeAdmin.products
     },
-    pagination(){
+    pagination () {
       return this.$store.state.storeAdmin.pagination
     }
   },
-  methods: {    
+  methods: {
     ...mapActions({
       getAdminProduct: 'storeAdmin/getAdminProduct'
     }),
-    openModal(boolForNew, item, style) {
-
+    openModal (boolForNew, item, style) {
       this.$refs.files.value = '' // 每次打開都將上傳檔案的欄位重新設置
-      if(style === 'reserve'){
-        if(boolForNew){
+      if (style === 'reserve') {
+        if (boolForNew) {
           this.tempProduct = {}
           this.isNew = true
-        }else{
-          this.tempProduct = Object.assign({}, item)    
+        } else {
+          this.tempProduct = Object.assign({}, item)
           this.isNew = false
         }
-        $("#productModal").modal("show");      
-      }else if(style === 'delete'){
-        this.tempProduct = Object.assign({}, item)        
-        $("#delProductModal").modal("show");      
-      }                  
-    },
-    closeModal(style){
-        if(style === 'reserve'){
-          $("#productModal").modal("hide")
-        }else if(style === 'delete'){
-          $("#delProductModal").modal("hide");      
-        }        
-    },
-    addProduct() {      
-      const vm = this;
-      let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;            
-      let data = this.tempProduct      
-      let method = 'post'
-      if(!vm.isNew){          
-          api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.tempProduct.id}`;
-          method = 'put'
+        $('#productModal').modal('show')
+      } else if (style === 'delete') {
+        this.tempProduct = Object.assign({}, item)
+        $('#delProductModal').modal('show')
       }
-      console.log(data)
-      
-      this.$http[method](api, {"data": data}).then((res) => {
-          console.log(res.data)
-          if(res.data.success){
-              // vm.getProducts(vm.pagination.current_page);
-              vm.getAdminProduct({page:vm.pagination.current_page })
-              vm.closeModal('reserve');
-          }else{
-            this.$swal({
-                type: 'error',
-                title: `${res.data.message}`,                        
-            })
-          }
+    },
+    closeModal (style) {
+      if (style === 'reserve') {
+        $('#productModal').modal('hide')
+      } else if (style === 'delete') {
+        $('#delProductModal').modal('hide')
+      }
+    },
+    addProduct () {
+      const vm = this
+      let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`
+      let data = this.tempProduct
+      let method = 'post'
+      if (!vm.isNew) {
+        api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.tempProduct.id}`
+        method = 'put'
+      }
+      this.$http[method](api, { 'data': data }).then((res) => {
+        console.log('[新增/編輯產品]', res.data)
+        if (res.data.success) {
+          vm.getAdminProduct({ page: vm.pagination.current_page })
+          vm.closeModal('reserve')
+        } else {
+          this.$swal({
+            type: 'error',
+            title: `${res.data.message}`
+          })
+        }
       })
     },
-    uploadFile(){
-        const vm = this;
-        const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`;
-        let formData = new FormData();
-        let img = this.$refs.files.files[0];
-        vm.isLoadingShow = true
-        formData.append('file-to-upload', img)
-        this.$http.post(api, formData, {
-            headers:{'Content-Type': 'multipart/form-data'}
-        }).then((res) => {
-            console.log(res.data)
-            vm.isLoadingShow = false
-            if(res.data.success){
-                // vm.tempProduct.imageUrl = res.data.imageUrl
-                vm.$set(vm.tempProduct, 'imageUrl', res.data.imageUrl)
-                vm.$bus.$emit('message:push', '新增照片成功', 'success')
-            }            
-        })
+    uploadFile () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`
+      let formData = new FormData()
+      let img = this.$refs.files.files[0]
+      vm.isLoadingShow = true
+      formData.append('file-to-upload', img)
+      this.$http.post(api, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then((res) => {
+        console.log('[新增照片]', res.data)
+        vm.isLoadingShow = false
+        if (res.data.success) {
+          vm.$set(vm.tempProduct, 'imageUrl', res.data.imageUrl)
+          vm.$bus.$emit('message:push', '新增照片成功', 'success')
+        }
+      })
     },
-    deleteProduct(id){
-      const vm = this;
+    deleteProduct (id) {
+      const vm = this
       const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${id}`
       this.$http.delete(api).then((res) => {
-          if(res.data.success){
-              // vm.getProducts();
-              vm.getAdminProduct({page:vm.pagination.current_page })
-              vm.closeModal('delete')
-          }
+        if (res.data.success) {
+          vm.getAdminProduct({ page: vm.pagination.current_page })
+          vm.closeModal('delete')
+        }
       })
-    },
-  },  
-  created() {            
-    this.getAdminProduct({page: 1})    
+    }
+  },
+  created () {
+    this.getAdminProduct({ page: 1 })
   }
-};
+}
 </script>
-
 
 <style lang="scss" scoped>
 </style>

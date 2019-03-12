@@ -1,5 +1,5 @@
 <template>
-  <div>        
+  <div>
     <div class="wrapper" @click="closeCart">
         <Navbox></Navbox>
         <router-view></router-view>
@@ -11,24 +11,23 @@
 // @ is an alias to /src
 import Navbox from '@/components/Navbox'
 
-
 export default {
   name: 'home',
-  data(){
-    return {      
+  data () {
+    return {
     }
   },
-  methods:{
-    closeCart(){      
+  methods: {
+    closeCart () {
       this.$bus.$emit('closeCart')
     }
   },
-  components: {        
+  components: {
     Navbox
-  }  
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  
+
 </style>

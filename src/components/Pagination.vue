@@ -22,20 +22,20 @@
 
 <script>
 export default {
-    name: 'pagination',    
-    props: ['paginationInfo'],
-    methods: {
-        getPagination(page){
-            console.log(page)
-            this.$emit('changePage-getPagination', { page }) // { page } 意思就是 { page: page }
-        }
-    },
-    created(){
-      console.log('paginationInfo',this.paginationInfo)
+  name: 'pagination',
+  props: ['paginationInfo'],
+  methods: {
+    getPagination (page) {
+      console.log(page)
+      this.$emit('changePage-getPagination', { page }) // { page } 意思就是 { page: page }
     }
+  },
+  created () {
+    console.log('paginationInfo', this.paginationInfo)
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-    
+
 </style>

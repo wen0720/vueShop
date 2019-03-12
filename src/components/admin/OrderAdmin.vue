@@ -5,7 +5,7 @@
             <main role="main" class="ml-sm-auto col-10 px-4">
                 <div
                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                    <h1 class="h2">訂單列表</h1>                    
+                    <h1 class="h2">訂單列表</h1>
                 </div>
                 <div class="table-responsive">
                     <table class="table mt-4">
@@ -15,7 +15,7 @@
                             <th>信箱</th>
                             <th width="120">購買項目</th>
                             <th width="120">應付金額</th>
-                            <th width="100">是否付款</th>                            
+                            <th width="100">是否付款</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -31,7 +31,7 @@
                             <td>
                                 <span v-if="item.is_paid" class="text-success">啟用</span>
                                 <span v-else>未啟用</span>
-                            </td>                            
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -43,34 +43,33 @@
 </template>
 
 <script>
-import moment from 'moment'
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
 import Pagination from '@/components/Pagination.vue'
 import { mapActions } from 'vuex'
 
 export default {
-    name: 'order',
-    data(){
-        return {
-            pagination: {},            
-        }
-    },
-    computed: {
-        orders(){
-            return this.$store.state.storeAdmin.orders
-        }
-    },
-    methods: {
-        ...mapActions({
-            getAdminOrders: 'storeAdmin/getAdminOrders'
-        })
-    },
-    components:{
-        SidebarAdmin,
-        Pagination
-    },
-    created(){      
-        this.getAdminOrders({})
+  name: 'order',
+  data () {
+    return {
+      pagination: {}
     }
+  },
+  computed: {
+    orders () {
+      return this.$store.state.storeAdmin.orders
+    }
+  },
+  methods: {
+    ...mapActions({
+      getAdminOrders: 'storeAdmin/getAdminOrders'
+    })
+  },
+  components: {
+    SidebarAdmin,
+    Pagination
+  },
+  created () {
+    this.getAdminOrders({})
+  }
 }
 </script>
