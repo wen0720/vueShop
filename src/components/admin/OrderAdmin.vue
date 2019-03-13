@@ -35,7 +35,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminOrders"></Pagination>
+                    <Pagination v-on:changePage-getPagination="getAdminOrders"></Pagination>
                 </div>
             </main>
         </div>

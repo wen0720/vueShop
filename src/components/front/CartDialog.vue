@@ -13,7 +13,7 @@
                     <td class="align-middle">
                         <button type="button"
                             class="btn btn-outline-danger btn-sm"
-                            @click="deleteCartProduct(item.id)">
+                            @click="deleteCartProduct({ 'id': item.id })">
                         <i class="far fa-trash-alt"></i>
                         </button>
                     </td>
@@ -38,7 +38,7 @@
                     </tr>
                 </tfoot>
             </table>
-            <router-link v-if="cartTotal !== 0" to="customOrder" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
+            <router-link v-if="cartTotal !== 0" to="/customOrder" class="btn btn-outline-primary py-2 d-block" tag="p">立即結帳</router-link>
             <p v-else class="border border-secondary text-center py-2 d-block rounded">尚未選購</p>
             <div class="cart__listMask"></div>
         </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'cartDialog',
   data () {
@@ -55,14 +57,9 @@ export default {
   },
   props: ['cart'],
   methods: {
-    deleteCartProduct (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
-      this.$http.delete(api).then((res) => {
-        console.log('[刪除購物車物品]', res.data)
-        vm.$emit('deleteCartProduct')
-      })
-    },
+    ...mapActions({
+      deleteCartProduct: 'storeFront/deleteCartProduct'
+    }),
     openCart () {
       this.showCart = true
     }
@@ -72,8 +69,9 @@ export default {
       return this.cart.carts ? this.cart.carts.length : null // 等cart確定傳進來之後
     }
   },
-  created () {
-    console.log('cartdialog created')
+  mounted () {
+    // component 切換時，會先觸發新元件的 created 後，才觸發舊元件的 destoryed ，
+    // 因此我改在 mounted 後才監聽事件，才不會在 created 完後，又被 destoryed 給 off 掉
     const vm = this
     this.$bus.$on('closeCart', () => {
       if (vm.showCart) {
@@ -81,7 +79,7 @@ export default {
       }
     })
   },
-  beforeDestroy () {
+  destroyed () {
     this.$bus.$off('closeCart')
   }
 }

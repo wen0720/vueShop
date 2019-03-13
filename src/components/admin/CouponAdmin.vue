@@ -40,7 +40,7 @@
             </tbody>
           </table>
 
-          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminCoupons"></Pagination>
+          <Pagination v-on:changePage-getPagination="getAdminCoupons"></Pagination>
         </div>
       </main>
     </div>
@@ -156,9 +156,6 @@ export default {
   computed: {
     coupons () {
       return this.$store.state.storeAdmin.coupons
-    },
-    pagination () {
-      return this.$store.state.storeAdmin.pagination
     }
   },
   methods: {

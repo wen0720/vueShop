@@ -38,7 +38,7 @@ Vue.filter('currency', (val) => {
 
 const app = new Vue({
   router,
-  store: store,
+  store,
   render: h => h(App)
 }).$mount('#app')
 

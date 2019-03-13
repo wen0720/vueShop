@@ -40,7 +40,7 @@
                 </tr>
               </tbody>
             </table>
-            <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getAdminProduct"></Pagination>
+            <Pagination v-on:changePage-getPagination="getAdminProduct"></Pagination>
           </div>
         </main>
       </div>
@@ -134,7 +134,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-            <button @click="addProduct" type="button" class="btn btn-primary">確認</button>
+            <button @click="addAdminProductThenClose({ isNew: isNew, data: tempProduct, id: tempProduct.id })" type="button" class="btn btn-primary">確認</button>
           </div>
         </div>
       </div>
@@ -198,12 +198,13 @@ export default {
       return this.$store.state.storeAdmin.products
     },
     pagination () {
-      return this.$store.state.storeAdmin.pagination
+      return this.$store.state.storeBasic.pagination
     }
   },
   methods: {
     ...mapActions({
-      getAdminProduct: 'storeAdmin/getAdminProduct'
+      getAdminProduct: 'storeAdmin/getAdminProduct',
+      addAdminProduct: 'storeAdmin/addAdminProduct'
     }),
     openModal (boolForNew, item, style) {
       this.$refs.files.value = '' // 每次打開都將上傳檔案的欄位重新設置
@@ -228,27 +229,9 @@ export default {
         $('#delProductModal').modal('hide')
       }
     },
-    addProduct () {
-      const vm = this
-      let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`
-      let data = this.tempProduct
-      let method = 'post'
-      if (!vm.isNew) {
-        api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.tempProduct.id}`
-        method = 'put'
-      }
-      this.$http[method](api, { 'data': data }).then((res) => {
-        console.log('[新增/編輯產品]', res.data)
-        if (res.data.success) {
-          vm.getAdminProduct({ page: vm.pagination.current_page })
-          vm.closeModal('reserve')
-        } else {
-          this.$swal({
-            type: 'error',
-            title: `${res.data.message}`
-          })
-        }
-      })
+    async addAdminProductThenClose ({ isNew, data, id }) {
+      await this.addAdminProduct({ isNew, data, id })
+      this.closeModal('reserve')
     },
     uploadFile () {
       const vm = this

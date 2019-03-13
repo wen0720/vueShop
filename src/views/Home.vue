@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     closeCart () {
+      console.log('close cart click')
       this.$bus.$emit('closeCart')
     }
   },

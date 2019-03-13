@@ -43,7 +43,7 @@ export default {
       }, 5000)
     }
   },
-  created () {
+  mounted () {
     const vm = this
     // 自定義名稱 'messsage:push'
     // message: 傳入參數

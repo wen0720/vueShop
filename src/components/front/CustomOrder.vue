@@ -65,7 +65,7 @@
                                     <td class="align-middle">
                                         <button type="button"
                                             class="btn btn-outline-danger btn-sm"
-                                            @click="deleteCartProduct(item.id)">
+                                            @click="deleteCartProduct({ 'id': item.id })">
                                         <i class="far fa-trash-alt"></i>
                                         </button>
                                     </td>
@@ -129,16 +129,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      getCarts: 'storeFront/getCarts'
+      getCarts: 'storeFront/getCarts',
+      deleteCartProduct: 'storeFront/deleteCartProduct'
     }),
-    deleteCartProduct (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
-      this.$http.delete(api).then((res) => {
-        console.log('[刪除購物車物品]', res.data)
-        vm.getCarts()
-      })
-    },
     postCoupon () {
       const vm = this
       const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`

@@ -3,10 +3,6 @@
         <div class="navbox">
             <router-link to="/" tag="h1"><p>始壯哥</p></router-link>
             <ul>
-                <!-- <li><a href="./form.html">找教練</a></li> -->
-                <!-- <li>
-                    <router-link to="/">找教練</router-link>
-                </li> -->
                 <li>
                     <router-link to="/signin">管理後台</router-link>
                 </li>

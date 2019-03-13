@@ -30,63 +30,23 @@
                                   </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <!-- <a href="#" @click.prevent="getProduct(item.id)" class="btn btn-outline-primary">詳細資料</a> -->
                                     <router-link :to="{path: `lesson/${item.id}`}" class="btn btn-outline-primary">詳細資料</router-link>
-                                    <!-- 詳細資料開一個新的頁面 <router-link class="btn btn-outline-primary" :to="{ name: 'class', params: { id: `${item.id}`} }">詳細資料</router-link> -->
-                                    <a href="#" @click.prevent="addToCart(item.id)" class="btn btn-primary">加入購物車</a>
+                                    <a href="#" @click.prevent="addToCart({ id: item.id })" class="btn btn-primary">加入購物車</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <Pagination :pagination-info="pagination" v-if="currentFilterStyle === '全部商品'"
+                    <Pagination v-if="currentFilterStyle === '全部商品'"
                                 v-on:changePage-getPagination="getFrontProducts"
                                 class="my-3"></Pagination>
                 </div>
-
-                <div id="productInfoModal" class="modal fade" tabindex="-1" role="productInfoModal" aria-labelledby="productInfoModal" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="row no-gutters">
-                                <div class="col">
-                                    <img :src="tempProduct.imageUrl" class="card-img-top" :alt="tempProduct.title">
-                                    <div class="card-body">
-                                        <p class="h3 card-title">{{ tempProduct.title }}</p>
-                                        <p class="card-text">{{ tempProduct.description }}</p>
-                                        <form>
-                                            <div class="form-group">
-                                            <label class="text-secondary" for="lessonAmount">購賣堂數</label>
-                                                <select class="form-control"
-                                                        id="lessonAmount"
-                                                        v-model="tempProduct.qty">
-                                                    <option v-for="num in 10"
-                                                            :value="num"
-                                                            :key="num">
-                                                            {{ num }} 堂</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                        <div class="row no-gutters mt-3">
-                                            <div class="col-6 d-flex">
-                                                <span v-if="tempProduct.qty" class="h5 align-self-center">總計 {{ tempProduct.price * tempProduct.qty | currency }}</span>
-                                            </div>
-                                            <div class="col-6 text-right">
-                                                <a @click.prevent="addToCart(tempProduct.id, tempProduct.qty)" href="#" class="btn btn-primary">加入購物車</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-        <cartDialog v-on:deleteCartProduct="getCarts"  :cart="cart"></cartDialog>
+        <cartDialog :cart="cart"></cartDialog>
     </div>
 </template>
 
 <script>
-import $ from 'jquery'
 import 'bootstrap/dist/js/bootstrap.bundle.js'
 
 import TopBanner from '@/components/front/TopBanner.vue'
@@ -99,10 +59,6 @@ export default {
   name: 'lesson',
   data () {
     return {
-      allProducts: [],
-      tempProduct: {
-        qty: 1
-      },
       currentFilterStyle: '全部商品',
       filterStyleArr: ['全部商品', '有氧', '飛輪', '肌力訓練', '基礎瑜珈', '飲食課程', '體驗', '1對1課程']
     }
@@ -127,53 +83,25 @@ export default {
     ...mapState({
       products: state => state.storeFront.products,
       pagination: state => state.storeFront.pagination,
-      cart: state => state.storeFront.carts
+      cart: state => state.storeFront.carts,
+      allProducts: state => state.storeFront.allProducts
     })
   },
   methods: {
     ...mapActions({
       getFrontProducts: 'storeFront/getFrontProducts',
-      getCarts: 'storeFront/getCarts'
+      getFrontAllProducts: 'storeFront/getFrontAllProducts',
+      getCarts: 'storeFront/getCarts',
+      addToCart: 'storeFront/addToCart'
     }),
-    getProduct (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${id}`
-      this.$http.get(api).then((res) => {
-        console.log('[取得單一商品]', res.data)
-        if (res.data.success) {
-          vm.tempProduct = Object.assign({}, res.data.product, { qty: 1 })
-          vm.openModal()
-        }
-      })
-    },
-    getAllProducts () {
-      const vm = this
-      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
-      this.$http.get(api).then((res) => {
-        console.log('[取得所有商品]', res.data)
-        if (res.data.success) {
-          vm.allProducts = res.data.products
-        }
-      })
-    },
-    openModal () {
-      $('#productInfoModal').modal('show')
-    },
-    closeModal () {
-      $('#productInfoModal').modal('hide')
-    },
     changeFilterStyle (idx) {
       this.currentFilterStyle = this.filterStyleArr[idx]
     }
   },
   created () {
-    console.log('lesson created')
     this.getFrontProducts({})
     this.getCarts()
-    this.getAllProducts()
-  },
-  mounted () {
-    console.log('lesson mounted')
+    this.getFrontAllProducts()
   }
 }
 </script>

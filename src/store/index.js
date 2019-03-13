@@ -9,20 +9,32 @@ import service from '../service'
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 
+const storeBasic = {
+  state: {
+    pagination: {}
+  },
+  mutations: {
+    setPagination (state, payload) {
+      state.pagination = payload.pagination
+    }
+  },
+  actions: {
+    setPagination ({ commit }) {
+      commit('setPagination')
+    }
+  }
+}
+
 const storeAdmin = {
   namespaced: true,
   state: {
     products: [],
-    pagination: {},
     coupons: {},
     orders: []
   },
   mutations: {
     setAdminProduct (state, payload) {
       state.products = payload.products
-    },
-    setAdminPagination (state, payload) {
-      state.pagination = payload.pagination
     },
     setAdminCoupons (state, payload) {
       payload.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD') }) // 轉換日期格式
@@ -35,11 +47,11 @@ const storeAdmin = {
   actions: {
     // 第一個參數是context{dispatch, commit, getters, rootGetters} 後面可以帶payload
     getAdminProduct ({ commit }, payload) {
-      service.getAdminProduct(payload.page).then((res) => {
+      return service.getAdminProduct(payload.page).then((res) => {
         if (res.data.success) {
           console.log('[Action: getAdminProduct ]', res.data)
           commit('setAdminProduct', { products: res.data.products })
-          commit('setAdminPagination', { pagination: res.data.pagination })
+          commit('setPagination', { pagination: res.data.pagination }, { root: true })
         }
       })
     },
@@ -49,7 +61,7 @@ const storeAdmin = {
           console.log('[Action: getAdminCoupons ]', res.data)
           let coupons = JSON.parse(JSON.stringify(res.data.coupons))
           commit('setAdminCoupons', { coupons: coupons })
-          commit('setAdminPagination', { pagination: res.data.pagination })
+          commit('setPagination', { pagination: res.data.pagination }, { root: true })
         }
       })
     },
@@ -57,8 +69,24 @@ const storeAdmin = {
       service.getAdminOrders(payload.page).then((res) => {
         console.log('[Action: getAdminOrders ]', res.data)
         commit('setAdminOrders', { orders: res.data.orders })
-        commit('setAdminPagination', { pagination: res.data.pagination })
+        commit('setPagination', { pagination: res.data.pagination }, { root: true })
       })
+    },
+    addAdminProduct ({ dispatch, rootState }, payload) {
+      console.log('payload.isNew', payload.isNew)
+      if (payload.isNew) {
+        return service.addAdminProduct(payload.data).then((res) => {
+          console.log('[Action: addAdminProduct ]', res.data)
+          if (res.data.success) {
+            return dispatch('getAdminProduct', { page: rootState.storeBasic.pagination.current_page })
+          }
+        })
+      } else {
+        return service.putAdminProduct(payload.data, payload.id).then((res) => {
+          console.log('[Action: addAdminProduct ]', res.data)
+          return dispatch('getAdminProduct', { page: rootState.storeBasic.pagination.current_page })
+        })
+      }
     }
   }
 }
@@ -67,9 +95,10 @@ const storeFront = {
   namespaced: true,
   state: {
     products: [],
+    allProducts: [],
     product: {},
-    pagination: {},
-    carts: {}
+    carts: {},
+    showCart: false
   },
   getters: {
     OthrSameCategoryPdt: state => {
@@ -86,8 +115,8 @@ const storeFront = {
     getFrontProducts (state, payload) {
       state.products = payload.products
     },
-    setFrontPagination (state, payload) {
-      state.pagination = payload.pagination
+    setFrontAllProducts (state, payload) {
+      state.allProducts = payload.products
     },
     setCarts (state, payload) {
       state.carts = payload.carts
@@ -102,7 +131,7 @@ const storeFront = {
         console.log('[Action: getFrontProducts ]', res.data)
         if (res.data.success) {
           commit('getFrontProducts', { products: res.data.products })
-          commit('setFrontPagination', { pagination: res.data.pagination })
+          commit('setPagination', { pagination: res.data.pagination }, { root: true })
         }
       })
     },
@@ -115,6 +144,14 @@ const storeFront = {
         }
       })
     },
+    getFrontAllProducts ({ commit }) {
+      service.getFrontAllProducts().then((res) => {
+        console.log('[Action: getFrontAllProducts]', res.data)
+        if (res.data.success) {
+          commit('setFrontAllProducts', { products: res.data.products })
+        }
+      })
+    },
     getCarts ({ commit }) {
       service.getCarts().then((res) => {
         console.log('[Action: getCarts ]', res.data)
@@ -122,18 +159,29 @@ const storeFront = {
           commit('setCarts', { carts: res.data.data })
         }
       })
+    },
+    addToCart ({ dispatch }, payload) {
+      service.addToCart(payload.id, payload.qty).then((res) => {
+        console.log('[Action: addToCart]', res.data)
+        if (res.data.success) {
+          dispatch('getCarts')
+        }
+      })
+    },
+    deleteCartProduct ({ dispatch }, payload) {
+      service.deleteCartProduct(payload.id).then((res) => {
+        console.log('[Action: deleteCartProduct]')
+        if (res.data.success) {
+          dispatch('getCarts')
+        }
+      })
     }
-    // addToCart({ commit }, payload){
-    //     service.addToCart(payload.id, payload.qty).then((res) => {
-    //         console.log('[Action: addToCart]', res.data)
-    //         commit('addToCart')
-    //     })
-    // }
   }
 }
 
 const store = new Vuex.Store({
   modules: {
+    storeBasic,
     storeAdmin,
     storeFront
   }
