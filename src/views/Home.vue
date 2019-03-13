@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="wrapper" @click="closeCart">
+    <div class="wrapper" @click="toogleCart({ bool: false })">
         <Navbox></Navbox>
         <router-view></router-view>
     </div>
@@ -13,14 +13,9 @@ import Navbox from '@/components/Navbox'
 
 export default {
   name: 'home',
-  data () {
-    return {
-    }
-  },
   methods: {
-    closeCart () {
-      console.log('close cart click')
-      this.$bus.$emit('closeCart')
+    toogleCart ({ bool }) {
+      this.$store.dispatch('toogleCart', { bool })
     }
   },
   components: {

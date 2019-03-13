@@ -14,9 +14,9 @@
 <script>
 export default {
   name: 'messageAlert',
-  data () {
-    return {
-      messages: []
+  computed: {
+    messages (state) {
+      return this.$store.state.storeBasic.messages
     }
   },
   methods: {
@@ -44,20 +44,17 @@ export default {
     }
   },
   mounted () {
-    const vm = this
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
-    vm.$bus.$on('message:push', (message, status = 'warning') => {
-      console.log('觸發了message:push')
-      vm.updateMessage(message, status)
-    })
-    // vm.$bus.$emit('message:push');
+    // vm.$bus.$on('message:push', (message, status = 'warning') => {
+    //   console.log('觸發了message:push')
+    //   vm.updateMessage(message, status)
+    // })
   },
   beforeDestroy () {
     console.log('message組件在此時將被destory')
-    const vm = this
-    vm.$bus.$off('message:push')
+    // vm.$bus.$off('message:push')
   }
 }
 </script>

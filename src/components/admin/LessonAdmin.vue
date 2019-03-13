@@ -204,7 +204,8 @@ export default {
   methods: {
     ...mapActions({
       getAdminProduct: 'storeAdmin/getAdminProduct',
-      addAdminProduct: 'storeAdmin/addAdminProduct'
+      addAdminProduct: 'storeAdmin/addAdminProduct',
+      updateMessage: 'updateMessage'
     }),
     openModal (boolForNew, item, style) {
       this.$refs.files.value = '' // 每次打開都將上傳檔案的欄位重新設置
@@ -247,7 +248,8 @@ export default {
         vm.isLoadingShow = false
         if (res.data.success) {
           vm.$set(vm.tempProduct, 'imageUrl', res.data.imageUrl)
-          vm.$bus.$emit('message:push', '新增照片成功', 'success')
+          vm.updateMessage({ message: '新增照片成功', status: 'success' })
+          // vm.$bus.$emit('message:push', '新增照片成功', 'success')
         }
       })
     },

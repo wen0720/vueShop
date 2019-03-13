@@ -11,16 +11,43 @@ Vue.use(Vuex)
 
 const storeBasic = {
   state: {
-    pagination: {}
+    pagination: {},
+    messages: [],
+    showCart: false
   },
   mutations: {
     setPagination (state, payload) {
       state.pagination = payload.pagination
+    },
+    updateMessage (state, { message, status, timestamp }) {
+      state.messages.push({
+        message,
+        status,
+        timestamp
+      })
+    },
+    toogleCart (state, { bool }) {
+      state.showCart = bool
     }
   },
   actions: {
     setPagination ({ commit }) {
       commit('setPagination')
+    },
+    updateMessage ({ commit, state }, { message, status }) {
+      console.log('[Action: updateMessage]')
+      const timestamp = Math.floor(new Date() / 1000)
+      commit('updateMessage', { message, status, timestamp })
+      setTimeout(() => {
+        state.messages.forEach((item, i) => {
+          if (item.timestamp === timestamp) {
+            state.messages.splice(i, 1)
+          }
+        })
+      }, 5000)
+    },
+    toogleCart ({ commit }, { bool }) {
+      commit('toogleCart', { bool })
     }
   }
 }
@@ -97,8 +124,7 @@ const storeFront = {
     products: [],
     allProducts: [],
     product: {},
-    carts: {},
-    showCart: false
+    carts: {}
   },
   getters: {
     OthrSameCategoryPdt: state => {

@@ -16,10 +16,10 @@ export default {
   getAdminOrders (page = 1) { // 取得後台訂單
     return Vue.axios.get(`${baseUrl}/admin/orders?page=${page}`)
   },
-  addAdminProduct (data) {
+  addAdminProduct (data) { // 新增產品
     return Vue.axios.post(`${baseUrl}/admin/product`, { 'data': data })
   },
-  putAdminProduct (data, id) {
+  putAdminProduct (data, id) { // 修改產品
     return Vue.axios.put(`${baseUrl}/admin/product/${id}`, { 'data': data })
   },
 

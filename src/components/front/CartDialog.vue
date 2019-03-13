@@ -1,5 +1,5 @@
 <template>
-    <div class="cart" @click.stop="openCart">
+    <div class="cart" @click.stop="toogleCart({ bool: true })">
         <div class="cart__btn">
             <div class="cart__num">{{ cartTotal }}</div>
             <i class="fas fa-cart-plus"></i>
@@ -50,15 +50,16 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'cartDialog',
-  data () {
-    return {
-      showCart: false
-    }
-  },
+  //   data () {
+  //     return {
+  //       showCart: false
+  //     }
+  //   },
   props: ['cart'],
   methods: {
     ...mapActions({
-      deleteCartProduct: 'storeFront/deleteCartProduct'
+      deleteCartProduct: 'storeFront/deleteCartProduct',
+      toogleCart: 'toogleCart'
     }),
     openCart () {
       this.showCart = true
@@ -67,20 +68,23 @@ export default {
   computed: {
     cartTotal () {
       return this.cart.carts ? this.cart.carts.length : null // 等cart確定傳進來之後
+    },
+    showCart () {
+      return this.$store.state.storeBasic.showCart
     }
   },
   mounted () {
     // component 切換時，會先觸發新元件的 created 後，才觸發舊元件的 destoryed ，
     // 因此我改在 mounted 後才監聽事件，才不會在 created 完後，又被 destoryed 給 off 掉
-    const vm = this
-    this.$bus.$on('closeCart', () => {
-      if (vm.showCart) {
-        vm.showCart = false
-      }
-    })
+    // const vm = this
+    // this.$bus.$on('closeCart', () => {
+    //   if (vm.showCart) {
+    //     vm.showCart = false
+    //   }
+    // })
   },
   destroyed () {
-    this.$bus.$off('closeCart')
+    // this.$bus.$off('closeCart')
   }
 }
 </script>
