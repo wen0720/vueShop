@@ -50,11 +50,6 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'cartDialog',
-  //   data () {
-  //     return {
-  //       showCart: false
-  //     }
-  //   },
   props: ['cart'],
   methods: {
     ...mapActions({

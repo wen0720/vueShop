@@ -1,7 +1,7 @@
 <template>
     <div>
         <top-banner>課程列表</top-banner>
-        <div class="container mt-5">
+        <div class="container my-5">
             <div class="row">
                 <div class="col-lg-2">
                     <div class="list-group">

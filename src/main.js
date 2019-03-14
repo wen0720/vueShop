@@ -8,7 +8,7 @@ import App from './App.vue'
 import router from './router'
 import { store } from './store'
 import './axios.js'
-import './bus'
+// import './bus'
 
 Vue.use(VueSweetalert2)
 Vue.use(VueCookies)

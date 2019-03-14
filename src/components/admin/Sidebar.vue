@@ -12,17 +12,17 @@
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <router-link to="/admin" class="nav-link">
+                        <router-link to="/admin" class="nav-link text-muted">
                             產品列表
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/admin/coupon" class="nav-link">
+                        <router-link to="/admin/coupon" class="nav-link text-muted">
                             折價券列表
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/admin/order" class="nav-link">
+                        <router-link to="/admin/order" class="nav-link text-muted">
                             訂單列表
                         </router-link>
                     </li>

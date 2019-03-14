@@ -22,6 +22,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    a {
+        @include dc;
+        &:hover{
+            transform: translateY(-3px);
+        }
+    }
 
    // gradient color
     .gradient01{

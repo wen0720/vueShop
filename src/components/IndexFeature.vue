@@ -131,7 +131,6 @@ export default {
 
 <style lang="scss" scoped>
     @import '~slick-carousel/slick/slick.css';
-
     // //page
 
     .wrapper {
@@ -162,10 +161,6 @@ export default {
         background: -webkit-linear-gradient(left, #ff5d42 0%,#ff4b42 100%); /* Chrome10-25,Safari5.1-6 */
         background: linear-gradient(to right, #ff5d42 0%,#ff4b42 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff5d42', endColorstr='#ff4b42',GradientType=1 ); /* IE6-9 */
-    }
-
-    .title{
-
     }
 
     .mainContent{
@@ -327,7 +322,7 @@ export default {
             h3{
                 font-size: 32px;
                 font-weight: 500;
-                margin: 20px 0;
+                margin: 40px 0 20px 0;
                 @include respond-to(ld){
                     font-size: 28px;
                 }
