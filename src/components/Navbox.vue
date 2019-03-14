@@ -3,9 +3,9 @@
         <div class="navbox">
             <router-link to="/" tag="h1"><p>始壯哥</p></router-link>
             <ul>
-                <li>
+                <!-- <li>
                     <router-link to="/signin">管理後台</router-link>
-                </li>
+                </li> -->
                 <li>
                     <router-link to="/lesson">課程列表</router-link>
                 </li>
