@@ -1,14 +1,14 @@
 <template>
     <div>
-         <header>                     
+         <header>
             <div class="mainContent">
                 <div class="slogan">
                     <h2>Fitness Life</h2>
-                    <p>Your Personal Coach</p>                    
-                </div>                        
-                <div class="mainbtn gradient01">                              
+                    <p>Your Personal Coach</p>
+                </div>
+                <div class="mainbtn gradient01">
                     <router-link to="lesson">立即購課</router-link>
-                </div>        
+                </div>
             </div>
         </header>
         <div class="container__box">
@@ -27,7 +27,7 @@
                             <div class="lesson_txt">
                                 <span>Personal Trainer</span>
                                 <h3>客製化體態分析</h3>
-                                <p>全身性體態盲點檢測：<br>經由教練評估設計解決方案。</p>                            
+                                <p>全身性體態盲點檢測：<br>經由教練評估設計解決方案。</p>
                             </div>
                         </div>
                         <div class="lesson_intro">
@@ -37,7 +37,7 @@
                             <div class="lesson_txt">
                                 <span>Body Remodeling</span>
                                 <h3>完整體態訓練</h3>
-                                <p>根據課表進行有效訓練，調整體態均衡，提升肌力。</p>                            
+                                <p>根據課表進行有效訓練，調整體態均衡，提升肌力。</p>
                             </div>
                         </div>
                         <div class="lesson_intro">
@@ -47,10 +47,10 @@
                             <div class="lesson_txt">
                                 <span>Diet Adjustment</span>
                                 <h3>個人飲食調整</h3>
-                                <p>提供飲食建議，熱量計算，輔助體態雕塑。</p>                            
+                                <p>提供飲食建議，熱量計算，輔助體態雕塑。</p>
                             </div>
                         </div>
-                    </slick>                                        
+                    </slick>
                 </div>
             </section>
             <div class="bnr">
@@ -80,64 +80,63 @@
                                     <h4>Tony 教練</h4>
                                     <p>健身是和自己不斷的戰鬥，唯有不停戰鬥，才能成為完美。</p>
                                 </div>
-                            </li>                            
+                            </li>
                         </ul>
                     </div>
                     <div class="title_box">
                         <div class="title">
                             <img src="../assets/images/img-titleCoach.png" alt="">
                         </div>
-                    </div>                    
+                    </div>
                 </div>
-            </section>            
-        </div>   
+            </section>
+        </div>
     </div>
 </template>
 
 <script>
-import Slick from 'vue-slick';
+import Slick from 'vue-slick'
 
 export default {
-    name: 'indexFeature',    
-    data(){
-        return {
-            slickOptions: {
-                infinite: false,
-                slidesToShow: 1,
-                autoplay: true,
-                autoplaySpeed: 2000,
-            }
-        }        
+  name: 'indexFeature',
+  data () {
+    return {
+      slickOptions: {
+        infinite: false,
+        slidesToShow: 1,
+        autoplay: true,
+        autoplaySpeed: 2000
+      }
+    }
+  },
+  methods: {
+    next () {
+      this.$refs.slick.next()
     },
-    methods: {
-        next(){
-            this.$refs.slick.next();
-        },
-        prev(){
-            this.$refs.slick.prev();
-        },
-        reInit() {
-            // Helpful if you have to deal with v-for to update dynamic lists
-            this.$nextTick(() => {
-                this.$refs.slick.reSlick();
-            });
-        },
+    prev () {
+      this.$refs.slick.prev()
     },
-    components: {
-        Slick
-    },
+    reInit () {
+      // Helpful if you have to deal with v-for to update dynamic lists
+      this.$nextTick(() => {
+        this.$refs.slick.reSlick()
+      })
+    }
+  },
+  components: {
+    Slick
+  }
 }
 </script>
 
 <style lang="scss" scoped>
     @import '~slick-carousel/slick/slick.css';
-
     // //page
 
     .wrapper {
         -webkit-overflow-scrolling: touch;
-        -webkit-font-smoothing: antialiased;     
-        line-height: 1.8;       
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.8;
     }
 
     * {
@@ -164,24 +163,20 @@ export default {
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff5d42', endColorstr='#ff4b42',GradientType=1 ); /* IE6-9 */
     }
 
-    .title{    
-        
-    }
-
     .mainContent{
         position: relative;
         height: 100vh;
         background: url(../assets/images/bg-womanCover.jpg) no-repeat center;
-        background-size: cover; 
+        background-size: cover;
         @include respond-to(ld){
             height: 110vh;
         }
         @include respond-to(ssm){
             height: 80vh;
             background-position: left center;
-        }    
+        }
         @include respond-to(px480){
-            height: 98vh;        
+            height: 98vh;
         }
     }
 
@@ -192,7 +187,7 @@ export default {
         @include translate-center;
         top:45%;
         width: 90%;
-        h2{        
+        h2{
             margin: 0;
             font-family: 'Muli', sans-serif;
             font-size: 100px;
@@ -213,8 +208,8 @@ export default {
     }
 
     .mainbtn{
-        max-width: 220px;    
-        margin: 0 auto;    
+        max-width: 220px;
+        margin: 0 auto;
         border-radius: 5px;
         text-align: center;
         position: absolute;
@@ -223,7 +218,7 @@ export default {
         bottom: 20%;
         margin: auto;
         @include respond-to(ld){
-            max-width: 170px;        
+            max-width: 170px;
         }
         a{
             display: block;
@@ -250,9 +245,9 @@ export default {
         .inbox{
             transform-origin: top left;
             transform: skewY(3.5deg);
-        }    
-        .title{        
-            max-width: 230px;    
+        }
+        .title{
+            max-width: 230px;
             float: right;
             width: 20%;
             @include respond-to(ssm){
@@ -273,13 +268,13 @@ export default {
         &_introList{
             width: 60%;
             float:left;
-            max-width: 800px;        
+            max-width: 800px;
             @include respond-to(ld){
                 width: 70%;
                 margin: 0 30px;
             }
             @include respond-to(sm){
-                width: 65%;            
+                width: 65%;
             }
             @include respond-to(ssm){
                 margin: 0 auto;
@@ -287,7 +282,7 @@ export default {
                 width: 80%;
             }
             @include respond-to(px480){
-                width: 85%;            
+                width: 85%;
             }
         }
         &_intro{
@@ -327,7 +322,11 @@ export default {
             h3{
                 font-size: 32px;
                 font-weight: 500;
+<<<<<<< HEAD
                 margin: 35px 0 20px;
+=======
+                margin: 40px 0 20px 0;
+>>>>>>> vuex_test
                 @include respond-to(ld){
                     font-size: 28px;
                 }
@@ -373,10 +372,10 @@ export default {
                         height: 90px;
                         top: -50px;
                         left: -10px;
-                        width: 3px;                
+                        width: 3px;
                     }
                 }
-            }        
+            }
         }
     }
 
@@ -414,7 +413,7 @@ export default {
         .inbox{
             font-size: 0;
         }
-        .title{        
+        .title{
             width: 46%;
             text-align: center;
             display: inline-block;
@@ -438,7 +437,7 @@ export default {
             }
         }
         &_txt{
-            width: 54%;        
+            width: 54%;
             max-width: 700px;
             text-align: center;
             display: inline-block;
@@ -472,14 +471,14 @@ export default {
                         font-size: 15px;
                     }
                 }
-            }        
+            }
         }
     }
 
     .coach{
         position: relative;
         background: url(../assets/images/bg-coach.jpg) no-repeat;
-        background-size: cover; 
+        background-size: cover;
         padding: 8% 0;
         @include respond-to(sm){
             padding: 3% 0;
@@ -534,16 +533,16 @@ export default {
             }
             // img{
             //     max-width: 250px;
-            // }        
+            // }
         }
         &_box{
             text-align: center;
             width: 58%;
-            float: left;        
+            float: left;
             @include respond-to(px600){
                 float: none;
                 width: 100%;
-                padding: 56% 0 20% 0;        
+                padding: 56% 0 20% 0;
             }
         }
         &_img{
@@ -629,7 +628,7 @@ export default {
 
     /deep/ .slick-prev:before, /deep/ .slick-next:before{
         content: '';
-        font-family: auto;    
+        font-family: auto;
         width: 30px;
         display: block;
         height: 30px;

@@ -1,11 +1,10 @@
 <template>
-    <div class="wrapper">          
+    <div class="wrapper">
         <Navbox-admin></Navbox-admin>
         <Message-alert></Message-alert>
-        <router-view></router-view>                        
+        <router-view></router-view>
     </div>
 </template>
-
 
 <script>
 
@@ -13,22 +12,21 @@ import NavboxAdmin from '@/components/Navbox_admin.vue'
 import MessageAlert from '@/components/MessageAlert.vue'
 
 export default {
-    name:'backstage',
-    data(){
-        return {
+  name: 'backstage',
+  data () {
+    return {
 
-        }
-    },
-    methods: {
+    }
+  },
+  methods: {
 
-    },
-    components:{
-        NavboxAdmin,
-        MessageAlert 
-    }    
+  },
+  components: {
+    NavboxAdmin,
+    MessageAlert
+  }
 }
 </script>
-
 
 <style lang="scss" scoped>
     /deep/ .wrapper{

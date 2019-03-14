@@ -1,6 +1,6 @@
 <template>
-  <div>        
-    <div class="wrapper" @click="closeCart">
+  <div>
+    <div class="wrapper" @click="toogleCart({ bool: false })">
         <Navbox></Navbox>
         <router-view></router-view>
     </div>
@@ -11,24 +11,19 @@
 // @ is an alias to /src
 import Navbox from '@/components/Navbox'
 
-
 export default {
   name: 'home',
-  data(){
-    return {      
+  methods: {
+    toogleCart ({ bool }) {
+      this.$store.dispatch('toogleCart', { bool })
     }
   },
-  methods:{
-    closeCart(){      
-      this.$bus.$emit('closeCart')
-    }
-  },
-  components: {        
+  components: {
     Navbox
-  }  
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  
+
 </style>

@@ -11,20 +11,20 @@
                     </a>
                 </h6>
                 <ul class="nav flex-column mb-2">
-                    <li class="nav-item">              
-                        <router-link to="/admin" class="nav-link">
-                            產品列表  
-                        </router-link>        
+                    <li class="nav-item">
+                        <router-link to="/admin" class="nav-link text-muted">
+                            產品列表
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/admin/coupon" class="nav-link">
-                            折價券列表  
-                        </router-link>        
+                        <router-link to="/admin/coupon" class="nav-link text-muted">
+                            折價券列表
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/admin/order" class="nav-link">
-                            訂單列表  
-                        </router-link>                    
+                        <router-link to="/admin/order" class="nav-link text-muted">
+                            訂單列表
+                        </router-link>
                     </li>
                 </ul>
             </div>
@@ -34,6 +34,6 @@
 
 <script>
 export default {
-    name: 'siebar_admin'
+  name: 'siebar_admin'
 }
 </script>

@@ -4,21 +4,21 @@
             <div class="topBanner_title">
                 <h2>
                     <slot></slot>
-                </h2>                    
-            </div>                                        
+                </h2>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'topBanner',
-    created(){
-        console.log('topbanner created')
-    },
-    mounted(){
-        console.log('topbanner mounted')
-    }
+  name: 'topBanner',
+  created () {
+    console.log('topbanner created')
+  },
+  mounted () {
+    console.log('topbanner mounted')
+  }
 }
 </script>
 
@@ -27,7 +27,7 @@ export default {
         position: relative;
         height: 30vh;
         background: url(../../assets/images/bg-womanCover.jpg) no-repeat center;
-        background-size: cover;     
+        background-size: cover;
         h2{
             font-size: 40px;
             font-weight: 500;

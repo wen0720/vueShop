@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">         
+  <div class="container-fluid">
     <div class="row">
       <sidebar-admin></sidebar-admin>
 
@@ -38,9 +38,9 @@
                 </td>
               </tr>
             </tbody>
-          </table>          
+          </table>
 
-          <Pagination :pagination-info="pagination" v-on:changePage-getPagination="getCoupons"></Pagination>
+          <Pagination v-on:changePage-getPagination="getAdminCoupons"></Pagination>
         </div>
       </main>
     </div>
@@ -68,7 +68,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label for="title">活動名稱</label>
-                  <input v-model="tempCoupon.title" type="text" class="form-control" id="title" placeholder="請輸入名稱">                  
+                  <input v-model="tempCoupon.title" type="text" class="form-control" id="title" placeholder="請輸入名稱">
                 </div>
 
                 <div class="form-row">
@@ -80,13 +80,13 @@
                     <label for="percent">折購%數</label>
                     <input v-model="tempCoupon.percent" type="percent" class="form-control" id="percent" placeholder="請輸入%數">
                   </div>
-                </div>                
+                </div>
 
                 <div class="form-group">
-                    <label for="due_date" class="col-form-label">到期日</label> 
-                    <input v-model="tempCoupon.due_date" class="form-control" type="date" value="" id="due_date">                    
+                    <label for="due_date" class="col-form-label">到期日</label>
+                    <input v-model="tempCoupon.due_date" class="form-control" type="date" value="" id="due_date">
                 </div>
-               
+
                 <div class="form-group">
                   <div class="form-check">
                     <input v-model="tempCoupon.is_enabled" class="form-check-input" type="checkbox" id="is_enabled">
@@ -140,106 +140,102 @@
 <script>
 import $ from 'jquery'
 import moment from 'moment'
-import "bootstrap/dist/js/bootstrap.bundle.js";
+import 'bootstrap/dist/js/bootstrap.bundle.js'
 import SidebarAdmin from '@/components/admin/Sidebar.vue'
 import Pagination from '@/components/Pagination.vue'
+import { mapActions } from 'vuex'
 
 export default {
-    name: 'couponAdmin',    
-    data(){
-      return {
-        coupons: {},
-        tempCoupon: {},
-        pagination: {},
-        isNew: false        
-      }
-    },       
-    methods: {
-      getCoupons(page = 1){
-        const vm = this;
-        const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`;
-        this.$http.get(api).then((res) => {
-          console.log(res.data)          
-          vm.pagination = res.data.pagination
-          vm.coupons = JSON.parse(JSON.stringify(res.data.coupons))
-          vm.coupons.forEach(el => { el.due_date = moment(el.due_date, 'x').format('YYYY-MM-DD')}) //轉換日期格式
-        })
-      },
-      addCoupon(id){
-        const vm = this;
-        let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
-        let methods = 'post' 
-        let data = {
-          "title": vm.tempCoupon.title,
-          "is_enabled": vm.tempCoupon.is_enabled,
-          "percent": vm.tempCoupon.percent,
-          "due_date": moment(vm.tempCoupon.due_date).format('x'),
-          "code": vm.tempCoupon.code
-        }
-        if(!vm.isNew){
-          api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${id}`;
-          methods = 'put'
-          data = {
-            "title": vm.tempCoupon.title,
-            "is_enabled": vm.tempCoupon.is_enabled,
-            "percent": vm.tempCoupon.percent,
-            "due_date": moment(vm.tempCoupon.due_date).format('x'),
-            "code": vm.tempCoupon.code            
-          }
-        }
-        console.log(data)
-        this.$http[methods](api, {"data": data}).then((res) => {
-            console.log(res.data)
-            if(res.data.success){
-              vm.getCoupons();
-              vm.closeModal('reserve')
-            }
-        })
-      },
-      openModal(bool, coupon, style){      
-        if(style === 'reserve'){
-          if(bool){
-            this.tempCoupon = {}
-            this.isNew = true
-          }else{
-            this.tempCoupon = Object.assign({}, coupon)
-            this.isNew = false
-          }                 
-          $('#couponModal').modal('show')  
-        }else if(style === 'delete'){
-          this.tempCoupon = Object.assign({}, coupon)
-          $('#delCouponModal').modal('show') 
-        }          
-      },
-      closeModal(style){
-        if(style === 'reserve'){
-          $('#couponModal').modal('hide')  
-        }else if(style === 'delete'){
-          $('#delCouponModal').modal('hide')
-        }
-      },
-      deleteCoupon(id){
-        const vm = this;
-        const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${id}`;
-        this.$http.delete(api).then((res) => {
-            console.log(res.data)
-            if(res.data.success){
-              vm.getCoupons();           
-              vm.closeModal('delete')   
-            }
-        })
-      }
-    },
-    components:{
-        SidebarAdmin,
-        Pagination
-    },
-    created(){      
-      this.getCoupons()      
+  name: 'couponAdmin',
+  data () {
+    return {
+      tempCoupon: {},
+      isNew: false
     }
+  },
+  computed: {
+    coupons () {
+      return this.$store.state.storeAdmin.coupons
+    }
+  },
+  methods: {
+    ...mapActions({
+      getAdminCoupons: 'storeAdmin/getAdminCoupons'
+    }),
+    addCoupon (id) {
+      const vm = this
+      let api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`
+      let methods = 'post'
+      let data = {
+        'title': vm.tempCoupon.title,
+        'is_enabled': vm.tempCoupon.is_enabled,
+        'percent': vm.tempCoupon.percent,
+        'due_date': moment(vm.tempCoupon.due_date).format('x'),
+        'code': vm.tempCoupon.code
+      }
+      if (!vm.isNew) {
+        api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${id}`
+        methods = 'put'
+        data = {
+          'title': vm.tempCoupon.title,
+          'is_enabled': vm.tempCoupon.is_enabled,
+          'percent': vm.tempCoupon.percent,
+          'due_date': moment(vm.tempCoupon.due_date).format('x'),
+          'code': vm.tempCoupon.code
+        }
+      }
+      this.$http[methods](api, { 'data': data }).then((res) => {
+        console.log('[新增/編輯優惠卷]', res.data)
+        if (res.data.success) {
+          vm.getAdminCoupons({ page: vm.pagination.current_page })
+          vm.closeModal('reserve')
+        }
+      })
+    },
+    openModal (bool, coupon, style) {
+      if (style === 'reserve') {
+        if (bool) {
+          this.tempCoupon = {}
+          this.isNew = true
+        } else {
+          this.tempCoupon = Object.assign({}, coupon)
+          this.isNew = false
+        }
+        $('#couponModal').modal('show')
+      } else if (style === 'delete') {
+        this.tempCoupon = Object.assign({}, coupon)
+        $('#delCouponModal').modal('show')
+      }
+    },
+    closeModal (style) {
+      if (style === 'reserve') {
+        $('#couponModal').modal('hide')
+      } else if (style === 'delete') {
+        $('#delCouponModal').modal('hide')
+      }
+    },
+    deleteCoupon (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_BASE_URL}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${id}`
+      this.$http.delete(api).then((res) => {
+        console.log('[刪除優惠券]', res.data)
+        if (res.data.success) {
+          vm.getAdminCoupons({ page: vm.pagination.current_page })
+          vm.closeModal('delete')
+        }
+      })
+    }
+  },
+  components: {
+    SidebarAdmin,
+    Pagination
+  },
+  created () {
+    this.getAdminCoupons({}) // 可帶空物件，因預設{page:1}
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-    
+
 </style>

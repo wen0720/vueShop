@@ -1,5 +1,5 @@
 <template>
-  <div id="app">    
+  <div id="app">
     <!-- <Navbox></Navbox> -->
     <router-view/>
     <Footer></Footer>
@@ -9,11 +9,11 @@
 <script>
 import Footer from '@/components/Footer.vue'
 
-export default {  
-  components: {        
+export default {
+  components: {
     // Navbox,
     Footer
-  },  
+  }
 }
 </script>
 
@@ -22,11 +22,10 @@ export default {
 @import '@/assets/sass/_variables.scss';
 @import '~bootstrap/scss/bootstrap.scss';
 
-
-#app {  
+#app {
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;    
-  padding-top: 77px; 
+  -moz-osx-font-smoothing: grayscale;
+  padding-top: 77px;
 }
 
 </style>

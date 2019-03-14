@@ -12,6 +12,7 @@
     "bootstrap": "^4.3.0",
     "crypto-js": "^3.1.9-1",
     "jquery": "^3.3.1",
+    "mixins": "github:wen0720/mixins#master",
     "moment": "^2.24.0",
     "vee-validate": "^2.1.7",
     "vue": "^2.5.22",
@@ -21,12 +22,14 @@
     "vue-loading-overlay": "^3.1.1",
     "vue-router": "^3.0.1",
     "vue-slick": "^1.1.15",
-    "vue-sweetalert2": "^1.6.4"
+    "vue-sweetalert2": "^1.6.4",
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
+    "@vue/cli-plugin-eslint": "^3.5.0",
     "@vue/cli-service": "^3.4.0",
+    "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.8.0",
@@ -38,11 +41,12 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "browser": true
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/standard"
     ],
     "rules": {
       "no-console": "off"

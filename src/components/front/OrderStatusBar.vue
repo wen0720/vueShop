@@ -16,8 +16,8 @@
 
 <script>
 export default {
-    name: 'orderStatusBar',    
-    props: ['status']
+  name: 'orderStatusBar',
+  props: ['status']
 }
 </script>
 
