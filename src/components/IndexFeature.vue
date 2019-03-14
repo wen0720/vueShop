@@ -322,11 +322,7 @@ export default {
             h3{
                 font-size: 32px;
                 font-weight: 500;
-<<<<<<< HEAD
-                margin: 35px 0 20px;
-=======
                 margin: 40px 0 20px 0;
->>>>>>> vuex_test
                 @include respond-to(ld){
                     font-size: 28px;
                 }

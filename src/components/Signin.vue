@@ -20,49 +20,6 @@
 import CryptoJS from 'crypto-js'
 
 export default {
-<<<<<<< HEAD
-    name: 'signIn',
-    data(){
-        return {
-            username: '',
-            password: '',
-            handleAccount: false,
-        }
-    },
-    computed: {
-        encryptUsername(){
-            const vm = this
-            return CryptoJS.AES.encrypt(vm.username, 'justLove').toString()
-        },
-        encryptPassword(){
-            const vm = this
-            return CryptoJS.AES.encrypt(vm.password, 'justLove').toString()
-        }        
-    }, 
-    methods: {
-         signIn(){
-            const vm = this;
-            const api = `${process.env.VUE_APP_API_BASE_URL}/admin/signin`
-            this.$http.post(api, {'username': vm.username, 'password': vm.password}).then((response) => {
-                console.log(response.data)      
-                if(response.data.success){
-                    console.log('成功登入')        
-                    if(vm.handleAccount){
-                        vm.$cookies.set('username', vm.encryptUsername, '1D', '/', null, true)
-                        vm.$cookies.set('password', vm.encryptPassword, '1D', '/', null, true)
-                    }                                
-                    console.log(vm.$cookies)
-                    vm.$router.push('/admin')
-                }else{
-                    console.log('登入失敗')
-                    this.$swal({
-                        type: 'error',
-                        title: `${response.data.message}`,                        
-                    })
-                }          
-            })
-        },            
-=======
   name: 'signIn',
   data () {
     return {
@@ -75,7 +32,6 @@ export default {
     encryptUsername () {
       const vm = this
       return CryptoJS.AES.encrypt(vm.username, 'justLove').toString()
->>>>>>> vuex_test
     },
     encryptPassword () {
       const vm = this
