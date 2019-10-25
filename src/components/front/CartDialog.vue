@@ -110,6 +110,13 @@ export default {
             padding: 10px;
             width: 400px;
             box-shadow: 0px 0px 10px rgba(0,0,0,.2);
+            @include respond-to(px480) {
+              position: fixed;
+              left: 0;
+              right: 0;
+              width: 100%;
+              bottom: 0;
+            }
         }
         &__num{
             position: absolute;

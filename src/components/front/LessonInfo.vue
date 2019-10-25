@@ -1,10 +1,10 @@
 <template>
     <div class="container py-5">
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 col-12">
                 <img :src="product.imageUrl" class="card-img-top" :alt="product.title">
             </div>
-            <div class="col-6">
+            <div class="col-md-6 col-12">
                 <div class="card-body">
                     <p class="h2 card-title">{{ product.title }}</p>
                     <p class="card-text my-4">

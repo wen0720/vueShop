@@ -59,6 +59,13 @@ router.beforeEach((to, from, next) => {
     return
   }
 
+  if (to.name === 'LessonInfo') {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   if (to.meta.requiresAuth) {
     console.log('進入此頁面需驗證')
     const api = `${process.env.VUE_APP_API_BASE_URL}/api/user/check`
@@ -74,4 +81,5 @@ router.beforeEach((to, from, next) => {
     console.log('此頁面不需要驗證')
     next()
   }
+
 })

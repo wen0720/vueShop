@@ -3,8 +3,8 @@
         <top-banner>建立訂單</top-banner>
         <div class="container">
             <order-status-bar :status="status"></order-status-bar>
-            <div class="row my-5">
-                <div class="col-8">
+            <div class="row my-5 mobileDirect">
+                <div class="col-md-8 col-12">
                     <div class="row justify-content-center">
                         <form class="col" @submit.prevent="postOrder">
                             <div class="form-group">
@@ -45,7 +45,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 col-12">
                     <div class="coupon">
                         <p class="h6 pt-2 pb-3">輸入折購碼</p>
                         <div class="input-group mb-3">
@@ -168,5 +168,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  .mobileDirect{
+    @include respond-to(ssm) {
+      flex-direction: column-reverse;
+    }
+  }
 </style>

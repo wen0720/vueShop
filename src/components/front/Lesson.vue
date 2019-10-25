@@ -5,12 +5,26 @@
             <div class="row">
                 <div class="col-lg-2">
                     <div class="list-group">
-                        <button  type="button" class="list-group-item list-group-item-action"
-                            v-for="(item, idx) in filterStyleArr" :key="item" :value="item"
-                            @click="changeFilterStyle(idx)"
-                            >
-                            {{item}}
+                        <button
+                          @click="showButtonList"
+                          class="list-group-item list-group-item-action mobileBtn">
+                          {{ currentFilterStyle }}
                         </button>
+                        <div class="mobileSelect"
+                            :class="{'open': isBtnListOpend}">
+                          <button
+                            type="button"
+                            class="list-group-item list-group-item-action"
+                              v-for="(item, idx) in filterStyleArr" :key="item" :value="item"
+                              @click="changeFilterStyle(idx)"
+                              >
+                              {{item}}
+                          </button>
+                        </div>
+                        <div
+                          :class="{'mask': isBtnListOpend}"
+                          @click="closeBtnList">
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -60,7 +74,8 @@ export default {
   data () {
     return {
       currentFilterStyle: '全部商品',
-      filterStyleArr: ['全部商品', '有氧', '飛輪', '肌力訓練', '基礎瑜珈', '飲食課程', '體驗', '1對1課程']
+      filterStyleArr: ['全部商品', '有氧', '飛輪', '肌力訓練', '基礎瑜珈', '飲食課程', '體驗', '1對1課程'],
+      isBtnListOpend: false,
     }
   },
   components: {
@@ -96,6 +111,13 @@ export default {
     }),
     changeFilterStyle (idx) {
       this.currentFilterStyle = this.filterStyleArr[idx]
+      this.isBtnListOpend = false
+    },
+    showButtonList () {
+      this.isBtnListOpend = true;
+    },
+    closeBtnList () {
+      this.isBtnListOpend = false
     }
   },
   created () {
@@ -105,3 +127,44 @@ export default {
   }
 }
 </script>
+
+
+<style scoped lang="scss">
+  .mobileBtn{
+    display: none;
+    @include respond-to(px480) {
+      display: block;
+    }
+  }
+  .mobileSelect {
+    transition: opacity .35s;
+    @include respond-to(px480) {
+      visibility: hidden;
+      opacity: 0;
+      position: fixed;
+      &.open{
+        visibility: visible;
+        opacity: 1;
+        z-index: 100;
+        width: 80%;
+        @include translate-center;
+        position: fixed;
+      }
+    }
+  }
+
+  .list-group {
+    position: relative;
+  }
+
+  .mask{
+    position: fixed;
+    background: rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+</style>
